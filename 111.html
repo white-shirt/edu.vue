@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>Document</title>
+  <style>
+    .list {
+      display: inline-block;
+      list-style: none;
+      font-size: 16px;
+      padding: 5px 30px;
+      background: #eee;
+      cursor: pointer;
+    }
+
+    .active {
+      background: yellowgreen;
+    }
+  
+  </style>
+</head>
+<body>
+  <ul id="ul">
+    <li v-bind:class="[isactive ? active : '', list]">111</li>
+    <li v-bind:class="[isactive ? active : '', list]">222</li>
+    <li v-bind:class="[isactive ? active : '', list]">333</li>
+  </ul>
+
+  <script>
+  
+  var app = new Vue({
+    el: '#ul',
+    data: {
+      isActive: true
+    }
+  })
+  
+  </script>
+</body>
+</html>

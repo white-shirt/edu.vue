@@ -1,0 +1,134 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    font-family: "微软雅黑", Tahoma, Helvetica, Arial, sans-serif;
+    overflow: hidden;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#editor {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 92%;
+  font-size: 12px;
+}
+
+.footBtn {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  display: -webkit-flex;
+  bottom: 0;
+  width: 100%;
+  height: 8%;
+  background: rgb(70, 70, 70);
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+  z-index: 100;
+}
+
+.footBtn span {
+  flex: 1;
+  flex-direction: row;
+  box-sizing: border-box;
+}
+
+.footBtn span:nth-child(1) {
+  border-right: 1px solid #fff;
+}
+
+.footBtn span:nth-child(2) {
+  border-left: 1px solid #fff;
+}
+
+.desWrap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: -100%;
+  background: rgb(255, 255, 255);
+  z-index: 90;
+}
+
+.desList {
+  display: flex;
+  display: -webkit-flex;
+  flex-wrap: wrap;
+  list-style: none;
+  overflow: auto;
+}
+
+.desBoxmask {
+  position: absolute;
+  display: none;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.boxWrap {
+  position: relative;
+  display: none;
+  width: 60%;
+  min-height: 30%;
+  max-height: 50%;
+  margin: 30% 20% 0%;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 10px 30px;
+  box-sizing: border-box;
+  overflow: scroll;
+  text-align: center;
+  font-size: 13px;
+  z-index: 101;
+}
+
+.boxTitle {
+  display: block;
+  font-size: 17px;
+  font-weight: bolder;
+  margin: 20px 0;
+}
+
+.boxCode {
+  display: block;
+  font-size: 14px;
+  text-align: left;
+  color: #555;
+  margin: 20px 0;
+  font-weight: 600;
+}
+
+.boxCodeDes {
+  display: block;
+  margin: 30px 0 50px;
+  line-height: 20px;
+  text-align: left;
+}
+
+.closeBtn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  bottom: 10px;
+  color: red;
+  box-sizing: border-box;
+}

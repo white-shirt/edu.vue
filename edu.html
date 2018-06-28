@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge, chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>aieggy编程</title>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="blockly/PCblockly_compressed.js?version=20180417"></script>
+    <script src="blockly/javascript_compressed.js"></script>
+    <script src="blockly/zh-hans.js"></script>
+    <script src="js/blocks.js?version=20180417"></script>
+    <script src="js/javascript.js?version=20180417"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="./css/normal.css"/>
+    <link rel="stylesheet" href="./css/edu.css"/>
+</head>
+
+<body>
+    <header id="header">
+        <div class="topLogo">
+            <div class="logo">
+                <img style="height: 100%" src="img/logo.png" alt="蛋玩科技" title="武汉蛋玩科技有限公司"/>
+            </div>
+            <div class="signIn">
+                <not-login></not-login>
+            </div>
+        </div>
+        <nav id="nav">
+            <ul class="mainNav">
+                <li v-for="item in mainNav" v-bind:class="{mainList: true, active: item.isActive}" v-on:click="mainNavClick(item)">{{ item.name }}</li>
+            </ul>
+            <ul class="fnNav">
+                <li v-for="item in fnNav" v-bind:class="{fnList: true, able: item.able}">{{ item.name }}</li>
+            </ul>
+        </nav>
+    </header>
+    <section id="section">
+        <div id="mainContent">
+            <blockly-code></blockly-code>
+        </div>
+        <div id="rightSidebar">
+            <ul class="sidebarBtnGroup">
+                <li v-for="item in sidebar" v-if="item.able"><span class="sidebarMove robot">{{ item.name }}</span></li>
+            </ul>
+        </div>
+    </section>
+    <script type="text/javascript">
+        $('#section').css({ 'height': $('body').height() - 160 + 'px' });
+
+    </script>
+    <script src="js/edu.js"></script>
+    <script src="js/component.js"></script>
+</body>
+
+</html>
