@@ -1,0 +1,161 @@
+/* header */
+#header {
+  width: 100%;
+  height: 80px;
+}
+
+.topLogo {
+  width: 100%;
+  height: 80px;
+  background: rgb(255, 222, 0);
+}
+
+.logo {
+  display: inline-block;
+  width: auto;
+  height: 60px;
+  margin: 10px 10px 10px 50px;
+}
+
+.signIn {
+  float: right;
+  width: 250px;
+  height: 60px;
+  margin: 10px 50px 10px 10px;
+  text-align: center;
+  line-height: 60px;
+}
+
+.notLogin {
+  float: right;
+}
+
+.notLogin span {
+  margin: 0 20px;
+  cursor: pointer;
+}
+
+#nav {
+  position: absolute;
+  width: 100%;
+  height: 80px;
+  overflow: hidden;
+  background: rgb(198, 198, 198);
+}
+
+.mainNav {
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  -webkit-transform:translate(-50%,-50%);
+}
+
+.mainList {
+  display: inline-block;
+  font-size: 16px;
+  padding: 6px 30px;
+  background: #fff;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.active {
+  background: rgb(255, 222, 0);
+}
+
+.fnNav {
+  position: absolute;
+  top: 50%;
+  right: 50px;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+}
+
+.fnList {
+  display: inline-block;
+  font-size: 15px;
+  font-weight: bolder;
+  padding: 40px 25px;
+  color: rgb(221, 221, 221);
+}
+
+.able {
+  color: #fff;
+  cursor: pointer;
+}
+
+/* header end */
+
+/* section */
+#section {
+  position: relative;
+  width: 100%;
+  background: #dbdbdb;
+}
+
+#mainContent {
+  position: absolute;
+  width: 100%;
+}
+
+#rightSidebar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background: #fff;
+  z-index: 100;
+}
+
+.sidebarBtnGroup {
+  display: flex;
+  display: -webkit-flex;
+  position: absolute;
+  top: 50px;
+  left: -50px;
+  width: 40px;
+  height: auto;
+  flex-direction: column;
+}
+
+.sidebarBtnGroup li {
+  flex: 1;
+  width: 40px;
+  height: 150px;
+  margin: 5px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #fff;
+}
+
+.sidebarBtnGroup li span {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
+  letter-spacing: 5px;
+  text-align: center;
+  writing-mode: vertical-lr;
+  line-height: 40px;
+}
+
+#blockly {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+#blocklyDiv {
+  width: 100%;
+  height: 100%;
+}
+
+.contentWrap {
+  width: 100%;
+  height: 100%;
+}
+
+/* section end */

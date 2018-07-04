@@ -1,7 +1,7 @@
 /* header */
 #header {
   width: 100%;
-  height: 160px;
+  height: 80px;
 }
 
 .topLogo {
@@ -36,7 +36,7 @@
 }
 
 #nav {
-  position: relative;
+  position: absolute;
   width: 100%;
   height: 80px;
   overflow: hidden;
@@ -96,8 +96,8 @@
 }
 
 #mainContent {
+  position: absolute;
   width: 100%;
-  height: 100%;
 }
 
 #rightSidebar {
@@ -139,6 +139,22 @@
   text-align: center;
   writing-mode: vertical-lr;
   line-height: 40px;
+}
+
+#blockly {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+#blocklyDiv {
+  width: 100%;
+  height: 100%;
+}
+
+#blocklyWrap {
+  width: 100%;
+  height: 100%;
 }
 
 /* section end */

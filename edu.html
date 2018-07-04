@@ -13,6 +13,7 @@
     <script src="js/blocks.js?version=20180417"></script>
     <script src="js/javascript.js?version=20180417"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="js/vuex.js"></script>
     <link rel="stylesheet" href="./css/normal.css"/>
     <link rel="stylesheet" href="./css/edu.css"/>
 </head>
@@ -27,33 +28,31 @@
                 <not-login></not-login>
             </div>
         </div>
+    </header>
+    <section id="section">
         <nav id="nav">
             <ul class="mainNav">
-                <li v-for="item in mainNav" v-bind:class="{mainList: true, active: item.isActive}" v-on:click="mainNavClick(item)">{{ item.name }}</li>
+                <li v-for="(tab, index) in tabs" v-bind:class="{mainList: true, active: active===index}" v-on:click="toggle(index, tab.view)">{{ tab.name }}</li>
             </ul>
             <ul class="fnNav">
                 <li v-for="item in fnNav" v-bind:class="{fnList: true, able: item.able}">{{ item.name }}</li>
             </ul>
         </nav>
-    </header>
-    <section id="section">
         <div id="mainContent">
-            <blockly-code></blockly-code>
-            <path-code></path-code>
-            <write-code></write-code>
-        </div>
-        <div id="rightSidebar">
-            <ul class="sidebarBtnGroup">
-                <li v-for="item in sidebar" v-if="item.able"><span class="sidebarMove robot">{{ item.name }}</span></li>
-            </ul>
+            <component :is="currentView"></component>
+            <div id="rightSidebar">
+                <ul class="sidebarBtnGroup">
+                    <li v-for="item in sidebars" v-if="item.able"><span class="sidebarMove robot">{{ item.name }}</span></li>
+                </ul>
+            </div>
         </div>
     </section>
     <script type="text/javascript">
-        $('#section').css({ 'height': $('body').height() - 160 + 'px' });
-
+        $('#section').css({ 'height': $('body').height() - $('#header').height() + 'px' });
+        $('#mainContent').css({ 'height': $('#section').height() - $('#nav').height() + 'px', 'top': $('#nav').height() + 'px' });
     </script>
     <script src="js/edu.js"></script>
+    <script src="js/template.js"></script>
     <script src="js/component.js"></script>
 </body>
-
 </html>

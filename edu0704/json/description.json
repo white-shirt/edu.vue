@@ -1,0 +1,122 @@
+[
+  {
+    "title": "等待",
+    "code": "aieggy.control('pause', 5);",
+    "description": "不可变参数'pause'会使&quot;蛋仔&quot;暂停<br/>可变参数5是&quot;蛋仔&quot;的暂停时间"
+  },
+  {
+    "title": "循环",
+    "code": "for (var i = 0; i < 3; i++) { <br/> //要执行的代码 <br/> }",
+    "description": "for(语句1; 语句2; 语句3;) {<br/>//要执行的代码块<br/>}<br/>语句1在循环(代码块)开始前执行<br/>语句2定义运行循环(代码块)的条件<br/>语句3在循环(代码块)已被执行之后执行<br/>示例:<br/>for(var i = 0; i < 2; i++) { <br/> aieggy.move('front', 1, 100); <br/> }<br/>上述代码的执行结果:机器人前进2步。"
+  },
+  {
+    "title": "如果",
+    "code": "if (条件) {<br/>//只有当条件为true时执行的代码<br/>}",
+    "description": "示例:<br>if (1 < 2) {<br/>aieggy.move('front', 1, 100);<br/>}<br/>上述代码执行结果:机器人向前走1步。<br/>if (1 > 2) {<br/>aieggy.move('front', 1, 100);<br>}<br/>上述代码执行结果:因为条件为假,所以不执行被执行语句,机器人不会向前走。"
+  },
+  {
+    "title": "如果..否则",
+    "code": "if (条件) {<br/>//只有当条件为true时执行的代码<br/>} else {<br/>//只有当条件为false时执行的代码<br/>}",
+    "description": "示例:<br>if (1 > 2) {<br/>aieggy.move('front', 1, 100)<br/>} else {<br/>aieggy.move('back', 1, 100)<br/>}<br/>上述代码执行结果:机器人向后退一步。"
+  },
+  {
+    "title": "前",
+    "code": "aieggy.move('front', 1, 100);",
+    "description": "不可变参数'front'告诉&quot;蛋仔&quot;向前走<br/>可变参数'1'代表前进1步(建议输入区间1-10)<br/>可变参数'100'代表前进速度(建议输入区间50-255,速度快了&quot;蛋仔&quot;会不高兴的)"
+  },
+  {
+    "title": "后",
+    "code": "aieggy.move('back', 1, 100);",
+    "description": "不可变参数'back'告诉&quot;蛋仔&quot;向后走<br/>可变参数'1'代表前进1步(建议输入区间1-10)<br/>可变参数'100'代表前进速度(建议输入区间50-255,速度快了&quot;蛋仔&quot;会不高兴的)"
+  },
+  {
+    "title": "左",
+    "code": "aieggy.move('left', 1, 100);",
+    "description": "不可变参数'left'告诉&quot;蛋仔&quot;向左走<br/>可变参数'1'代表前进1步(建议输入区间1-10)<br/>可变参数'100'代表前进速度(建议输入区间50-255,速度快了&quot;蛋仔&quot;会不高兴的)"
+  },
+  {
+    "title": "右",
+    "code": "aieggy.move('right', 1, 100);",
+    "description": "不可变参数'right'告诉&quot;蛋仔&quot;向右走<br/>可变参数'1'代表前进1步(建议输入区间1-10)<br/>可变参数'100'代表前进速度(建议输入区间50-255,速度快了&quot;蛋仔&quot;会不高兴的)"
+  },
+  {
+    "title": "保持直行",
+    "code": "aieggy.move('keepwalking', 10, 100);",
+    "description": "不可变参数'keepwalking'告诉&quot;蛋仔&quot;保持运动状态<br/>可变参数'10'代表保持直行10秒(建议输入区间1-10,时间长了&quot;蛋仔&quot;会累的)<br/>可变参数'100'代表前进速度(建议输入区间50-255,速度快了&quot;蛋仔&quot;会不高兴的)"
+  },
+  {
+    "title": "保持后退",
+    "code": "aieggy.move('keepwalking', 10, -100);",
+    "description": "不可变参数'keepwalking'告诉&quot;蛋仔&quot;保持运动状态<br/>可变参数'10'代表保持后退10秒(建议输入区间1-10,时间长了&quot;蛋仔&quot;会累的)<br/>可变参数'-100'代表后退速度(建议输入区间-50 - -255,速度快了&quot;蛋仔&quot;会不高兴的)"
+  },
+  {
+    "title": "转圈",
+    "code": "aieggy.move('rotate', 10, 100);",
+    "description": "不可变参数'rotate'告诉&quot;蛋仔&quot;该转圈了<br/>可变参数'10'代表保持转圈状态10秒(建议输入区间1-10,时间长了&quot;蛋仔&quot;会累的)<br/>可变参数'100'代表转圈速度(正数逆时针转圈负数顺时针转圈)"
+  },
+  {
+    "title": "耳朵RGB",
+    "code": "aieggy.customEarColor(参数1, 参数2, 参数3);",
+    "description": "参数1(颜色值):数字,参考HSV颜色H值<br/>参数2(闪烁快慢):数字,为保护眼睛建议数字区间0-20<br/>参数3(灯光亮度):数字,为保护眼睛建议数字区间50-150"
+  },
+  {
+    "title": "关闭灯光",
+    "code": "aieggy.turnOff();",
+    "description": "关闭耳朵灯光"
+  },
+  {
+    "title": "动物",
+    "code": "aieggy.play('animal', 8, 0);",
+    "description": "不可变参数'animal':告诉&quot;蛋仔&quot;播放动物声音<br/>可变参数'8':播放第8首声音(宝宝只学会了10种声音,别输入大于10的数字哦~)<br/>可变参数'0':播放完声音后才能执行下一个动作(当输入1时会边播放声音边执行下一个动作)"
+  },
+  {
+    "title": "音效",
+    "code": "aieggy.play('speak', 12, 0);",
+    "description": "不可变参数'speak':告诉&quot;蛋仔&quot;播放音效<br/>可变参数'12':播放第12首音效(宝宝只学会了11种音效,输入区间12-22来听听吧~)<br/>可变参数'0':播放完声音后才能执行下一个动作(当输入1时会边播放声音边执行下一个动作)"
+  },
+  {
+    "title": "音符",
+    "code": "aieggy.play('note', 8, 1);",
+    "description": "不可变参数'note':告诉&quot;蛋仔&quot;播放音符<br/>可变参数'8':播放第8个音符(输入区间1-8,来听听美妙的旋律吧~)<br/>不可变参数'1':边播放声音边执行下一个动作"
+  },
+  {
+    "title": "音乐",
+    "code": "aieggy.play('music', 41, 1);",
+    "description": "不可变参数'music':告诉&quot;蛋仔&quot;播放音乐<br/>可变参数'41':播放第41首歌曲(输入区间41-50,来听听美妙的旋律吧~)<br/>可变参数'1':边播放声音边执行下一个动作(输入'0'则播放完歌曲后才会执行下一个动作)"
+  },
+  {
+    "title": "小秘密",
+    "code": "aieggy.play('secret', 31, 1);",
+    "description": "不可变参数'secret':告诉&quot;蛋仔&quot;播放它的小秘密<br/>可变参数'31':播放第31个小秘密(输入区间41-40,快来了解我吧~)<br/>可变参数'1':边播放声音边执行下一个动作(输入'0'则播放完歌曲后才会执行下一个动作)"
+  },
+  {
+    "title": "寻线",
+    "code": "aieggy.mode('pattern', 80, 10);",
+    "description": "不可变参数'pattern':告诉&quot;蛋仔&quot;开启寻线模式<br/>可变参数'80':寻线速度(建议输入区间50-255)<br/>可变参数'10':寻线时间(建议输入区间5-1000)"
+  },
+  {
+    "title": "避障",
+    "code": "aieggy.mode('elude', 80, 10);",
+    "description": "不可变参数'elude':告诉&quot;蛋仔&quot;开启避障模式<br/>可变参数'80':寻线速度(建议输入区间50-255)<br/>可变参数'10':避障时间(建议输入区间5-1000)"
+  },
+  {
+    "title": "跟随",
+    "code": "aieggy.mode('follow', 0, 10);",
+    "description": "不可变参数'follow':告诉&quot;蛋仔&quot;开启跟随模式<br/>不可变参数'0':不可输入其他值(宝宝会出错的)<br/>可变参数'10':跟随时间(建议输入区间5-1000)"
+  },
+  {
+    "title": "十字寻线",
+    "code": "aieggy.patternFront(数字参数)",
+    "description": "可变参数'数字参数'<br/>'1':前进1步<br/>'2':左转弯<br/>'3':右转弯<br/>'4':掉头"
+  },
+  {
+    "title": "放下/拿起",
+    "code": "if (true) { <br/>aieggy.onground('start');<br/>//要执行的代码<br/>aieggy.onground('end');<br/>}<br/>if (true) {<br/>aieggy.pickUp('start');<br/>//要执行的代码<br/>aieggy.pickUp('end');<br/>}",
+    "description": "不可变参数'true'<br/>"
+  },
+  {
+    "title": "侦测距离",
+    "code": "if (true) {<br/>aieggy.eyeSensor('start', 参数1);<br/>//要执行的代码<br/>aieggy.eyeSensor('end', 参数1);<br/>}",
+    "description": "不可变参数'true'<br/>可选参数1:<br/>1:litDistance,侦测到近距离障碍物<br/>2:midDistance,侦测到中等距离障碍物<br/>3:farDistance,侦测到远处有障碍物"
+  }
+]
