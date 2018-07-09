@@ -30,9 +30,26 @@
   float: right;
 }
 
-.notLogin span {
-  margin: 0 20px;
+.notLogin li {
+  display: inline-block;
+  margin: 0 15px;
+}
+
+.notLogin li span {
+  font-size: 15px;
+  padding: 10px 20px;
+  border-radius: 7px;
   cursor: pointer;
+  background: #fff;
+}
+
+.notLogin li span:hover {
+  background: rgb(241, 241, 241);
+}
+
+.userAvatar {
+  background: url(../img/logo0.jpg) no-repeat !important;
+  background-size: 100% 100% !important; 
 }
 
 #nav {
@@ -61,8 +78,12 @@
   border-radius: 5px;
 }
 
-.active {
+.mainList:hover {
   background: rgb(255, 222, 0);
+}
+
+.active {
+  background: rgb(255, 222, 0) !important;
 }
 
 .fnNav {
@@ -93,6 +114,7 @@
   position: relative;
   width: 100%;
   background: #dbdbdb;
+  z-index: 90;
 }
 
 #mainContent {
@@ -106,6 +128,8 @@
   right: 0;
   width: 300px;
   height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
   background: #fff;
   z-index: 100;
 }
@@ -142,6 +166,15 @@
   line-height: 40px;
 }
 
+.sidebarBtnGroup li:hover {
+  background: rgb(255, 222, 0);
+}
+
+.sidebarContent {
+  width: 100%;
+  height: 100%;
+}
+
 #blockly {
   display: inline-block;
   width: 100%;
@@ -159,3 +192,270 @@
 }
 
 /* section end */
+
+/* ModalBox */
+.ModalBox {
+  position: absolute;
+  width: auto;
+  height: auto;
+  top: 180px;
+  z-index: 210;
+}
+
+.login {
+  position: absolute;
+  width: 500px;
+  height: auto;
+  border-radius: 20px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.login .enterWrap {
+  width: 320px;
+  height: auto;
+  margin: 20px auto;
+}
+
+.modalhead {
+  width: 100%;
+  height: 60px;
+  font-size: 15px;
+  text-align: center;
+  line-height: 60px;
+  color: #000000;
+  background: #e3e3e8;
+}
+
+.login .close {
+  display: inline-block;
+  position: absolute;
+  font-size: 25px;
+  line-height: 60px;
+  right: 20px;
+  cursor: pointer;
+  color: #696969;
+}
+
+.login .inputList {
+  display: inline-block;
+  width: 100%;
+  height: 40px;
+  margin-top: 25px;
+}
+
+.login .faIcon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  font-size: 25px;
+  color: #d0d0d0;
+  border: 2px solid #d0d0d0;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.login input {
+  display: inline-block;
+  width: 260px;
+  height: 40px;
+  float: right;
+  box-sizing: border-box;
+  border: 2px solid #d0d0d0;
+  border-radius: 8px;
+  padding: 0 10px;
+  color: #555;
+  font-size: 14px;
+}
+
+.login .loginBtn {
+  width: 320px;
+  height: 40px;
+  margin: 25px auto 0;
+  font-size: 19px;
+  text-align: center;
+  line-height: 40px;
+  background: rgb(255, 222, 0);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.login .bottomBtn {
+  width: 320px;
+  height: auto;
+  font-size: 13px;
+  margin: 10px auto 0;
+}
+
+.bottomBtn .botToRegister, .botToLogin {
+  float: left;
+  cursor: pointer;
+}
+
+.bottomBtn .botTofind {
+  float: right;
+  cursor: pointer;
+}
+
+.loginWrap::after {
+  content: '';
+  display: inline-block;
+  width: 100%;
+  height: 90px;
+  margin-top: 50px;
+  background: url(../img/botPic.png) no-repeat;
+  background-size: 100% 100%;
+}
+
+.registerWrap::after {
+  content: '';
+  display: inline-block;
+  width: 100%;
+  height: 90px;
+  margin-top: 50px;
+  background: url(../img/botPic.png) no-repeat;
+  background-size: 100% 100%;
+}
+
+.stuInfoWrap {
+  width: 600px;
+}
+
+.vmpart {
+  position: relative;
+  width: 540px;
+  height: 200px;
+  margin: 10px auto;
+}
+
+.vmpart .vm {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  text-align: center;
+}
+
+.vmpart .vm .vmPic {
+  display: inline-block;
+  width: 80%;
+  height: auto;
+}
+
+.vmpart .vm .title {
+  display: inline-block;
+  width: 200px;
+  height: auto;
+  max-width: 200px;
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  white-space: nowrap; 
+}
+
+.vmpart .userenter {
+  position: absolute;
+  width: 320px;
+  height: 200px;
+  right: 0;
+}
+
+.userenter .username {
+  width: 100%;
+}
+
+.userenter .sex {
+  font-size: 15px;
+  padding: 8px 35px;
+  margin: 10px 20px;
+  border: 2px solid rgb(255, 222, 0);
+  border-radius: 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.userenter .birthday {
+  display: flex;
+  display: -webkit-flex;
+  width: 80%;
+  height: 30px;
+  text-align: center;
+  margin: 3px auto;
+}
+
+.userenter .btn {
+  flex: 1;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  margin: 0 5px;
+  border: 2px solid #d0d0d0;
+  border-radius: 5px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.userenter .btn:hover {
+  border-color: rgb(255, 222, 0);
+}
+
+.userenter .num {
+  flex: 3;
+  display: inline-block;
+  width: 80px;
+  height: 30px;
+  font-size: 15px;
+  border: 2px solid #d0d0d0;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.userenter .grade {
+  width: 100%;
+  display: flex;
+  display: -webkit-flex;
+}
+
+.userenter .grade .gradelist {
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+}
+
+.userenter .grade .gradelist:hover {
+  font-weight: 700;
+  font-size: 20px;
+  color:rgb(255, 222, 0);
+}
+
+.gradeactive {
+  font-weight: 700;
+  font-size: 20px;
+  color:rgb(255, 222, 0);
+}
+
+.userenter .next {
+  width: 320px;
+  height: 40px;
+  position: absolute;
+  bottom: 20px;
+  text-align: center;
+  line-height: 40px;
+  background: rgb(255, 222, 0);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.userenter .info {
+  width: 100%;
+  height: auto;
+  margin-top: 30px;
+  text-align: center;
+}
+
+
+
+
+
+
+/* ModalBox end */

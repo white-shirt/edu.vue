@@ -3,18 +3,17 @@
  * @description    [draw track and send to robot]
  * @date           [2018.04.12]
  */
-
-var canvasBg = document.querySelector('#canvasBg');
-var Connections = document.querySelector('#Connections');
-var drawLine = document.querySelector('#drawLine');
-var sendAnimation = document.querySelector('#sendAnimation');
-var btngroup = document.querySelectorAll('.btngroup');
-var ctxBg = canvasBg.getContext('2d');
-var ctxConnections = Connections.getContext('2d');
-var ctxDrawline = drawLine.getContext('2d');
-var ctxsendAnimation = sendAnimation.getContext('2d');
-var canvasWidth = canvasBg.parentElement.offsetWidth;
-var canvasHeight = canvasBg.parentElement.offsetHeight * 0.9;
+  var canvasBg = document.querySelector('#canvasBg');
+  var Connections = document.querySelector('#Connections');
+  var drawLine = document.querySelector('#drawLine');
+  var sendAnimation = document.querySelector('#sendAnimation');
+  var btngroup = document.querySelectorAll('.btngroup');
+  var ctxBg = canvasBg.getContext('2d');
+  var ctxConnections = Connections.getContext('2d');
+  var ctxDrawline = drawLine.getContext('2d');
+  var ctxsendAnimation = sendAnimation.getContext('2d');
+  var canvasWidth = canvasBg.parentElement.offsetWidth;
+  var canvasHeight = canvasBg.parentElement.offsetHeight * 0.9;
 /**
  * init canvasBg canvasConnections canvasdrawLine
  */
@@ -64,7 +63,9 @@ var canvasHeight = canvasBg.parentElement.offsetHeight * 0.9;
   }
 })();
 (function initBtngroup(){
-    document.querySelector('.BtnWrap').style.top = canvasHeight + "px";
+  var BtnWrap = document.querySelector('.BtnWrap');
+  BtnWrap.style.top = canvasHeight + "px";
+  BtnWrap.style.left = canvasWidth / 2 - BtnWrap.offsetWidth / 2 + 'px';
 })();
 /**
  * order Array

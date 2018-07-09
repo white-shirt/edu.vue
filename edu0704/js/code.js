@@ -2,8 +2,9 @@
 var editor = ace.edit('editor');
 var JavaScriptMode = ace.require('ace/mode/javascript').Mode;
 editor.session.setMode(new JavaScriptMode());
-editor.setTheme('ace/theme/textmate');
-editor.setValue('/*enter code here*/');
+editor.setTheme('ace/theme/tomorrow_night_eighties');
+editor.setValue('/*write code here*/');
+$('#editor').css({ 'fontSize': '14px' });
 editor.setShowPrintMargin(false);
 var userId = $('#DeviceId').val();
 var start = {

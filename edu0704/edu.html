@@ -13,7 +13,10 @@
     <script src="js/blocks.js?version=20180417"></script>
     <script src="js/javascript.js?version=20180417"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="js/vuex.js"></script>
+    <script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="ace/theme-tomorrow_night_eighties.js" type="text/javascript" charset="utf-8"></script>
+    <script src="ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="./css/normal.css"/>
     <link rel="stylesheet" href="./css/edu.css"/>
     <link rel="stylesheet" href="./css/path.css"/>
@@ -27,7 +30,9 @@
                 <img style="height: 100%" src="img/logo.png" alt="蛋玩科技" title="武汉蛋玩科技有限公司"/>
             </div>
             <div class="signIn">
-                <not-login></not-login>
+                <ul class="notLogin">
+                    <li v-for="item in sign"><span v-bind:class="item.attr" v-on:click="signIn(item.attr)">{{ item.name }}</span></li>
+                </ul>
             </div>
         </div>
     </header>
@@ -97,7 +102,7 @@
                     </category>
                 </xml>
             </div>
-            <div class="contentWrap pathCode" style="display: none">
+            <div class="contentWrap pathCode" style="display: block">
                 <canvas id="canvasBg"></canvas>
                 <canvas id="Connections"></canvas>
                 <canvas id="drawLine"></canvas>
@@ -111,42 +116,37 @@
                   </ul>
                 </div>
             </div>
-            <div class="contentWrap codeCode" style="display: none">]
+            <div class="contentWrap codeCode" style="display: block">
                 <div class="wrap">
                     <div id="editor"></div>
-                    <div class="footBtn">
-                      <span class="description">代码说明</span>
-                      <span class="start">运行</span>
-                    </div>
-                    <div class="desBoxmask"></div>
-                    <div class="desWrap"></div>
-                    <div class="boxWrap">
-                      <span class="boxTitle"></span>
-                      <span class="boxCode"></span>
-                      <span class="boxCodeDes"></span>
-                      <span class="closeBtn">好了,我知道了</span>
-                    </div>
                 </div>
             </div>
             <div id="rightSidebar">
                 <ul class="sidebarBtnGroup">
-                    <li v-for="item in sidebars" v-if="item.able"><span class="sidebarMove robot">{{ item.name }}</span></li>
+                    <li v-for="(item, index) in sidebars" v-if="item.able" v-bind:class="{ active: indexof === index }" v-on:click="toggle(item.attr, index)"><span class="sidebarMove">{{ item.name }}</span></li>
                 </ul>
+                <div class="sidebarContent">robot</div>
             </div>
         </div>
     </section>
+    <div class="ModalBox">
+        <login-modal v-if="loginModalStatus" v-bind:post="login"></login-modal>
+        <register-modal v-if="registerModalStatus" v-bind:post="register"></register-modal>
+        <stuinfo-modal v-if="stuInfoStatus" v-bind:post="stuInfo"></stuinfo-modal>
+    </div>
+    <div class="mask"></div>
     <script type="text/javascript">
         $('#section').css({ 'height': $('body').height() - $('#header').height() + 'px' });
         $('#mainContent').css({ 'height': $('#section').height() - $('#nav').height() + 'px', 'top': $('#nav').height() + 'px' });
+        window.onload = function () {
+            $('.pathCode').css({ 'display': 'none' });
+            $('.codeCode').css({ 'display': 'none' });
+        }
     </script>
-    <script src="js/edu.js"></script>
-    <script src="js/template.js"></script>
     <script src="js/component.js"></script>
-    <script id="blocklyJs" src="js/Blocklyindex.js"></script>
-    <script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
-    <script src="ace/theme-textmate.js" type="text/javascript" charset="utf-8"></script>
-    <script src="ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
-    <script id="codeJs" src="js/code.js"></script>
-    <script id="pathJs" src="js/path.js"></script>
+    <script src="js/edu.js"></script>
+    <script src="js/Blocklyindex.js"></script>
+    <script src="js/code.js"></script>
+    <script src="js/path.js"></script>
 </body>
 </html>

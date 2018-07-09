@@ -21,13 +21,17 @@ var workspace = Blockly.inject('blocklyDiv',
   });
 
 /* init something */
-var blocklyTreeLabel = document.querySelectorAll('.blocklyTreeLabel');
-var corlorArr = ["#008c97", "#f5821f", "#fec002", "#d80381", "#01bee6", "#01c1b6"];
-for (var i = 1; i < blocklyTreeLabel.length; i++) {
-  blocklyTreeLabel[i].style.color = corlorArr[i - 1];
+function init() {
+  $('#PCbg').css({ 'width': '100%', 'height': 'auto' });
+  var blocklyTreeLabel = document.querySelectorAll('.blocklyTreeLabel');
+  var corlorArr = ["#008c97", "#f5821f", "#fec002", "#d80381", "#01bee6", "#01c1b6"];
+  for (var i = 1; i < blocklyTreeLabel.length; i++) {
+    blocklyTreeLabel[i].style.color = corlorArr[i - 1];
+  };
 };
 
-
-
-
+init();
+$(window).resize(function () {
+  $('#PCbg').css({ 'width': '100%', 'height': 'auto' });
+})
 /* init something end */
