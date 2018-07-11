@@ -7,6 +7,7 @@
 var login = new Vue({
   el: '.signIn',
   data: {
+    status: false,
     sign: [
       { name: '登录', attr: 'tosign' },
       { name: '注册', attr: 'register' }
@@ -42,6 +43,24 @@ var fnNav = new Vue({
       { name: '保存', attr: 'save', able: true },
       { name: '示例', attr: 'example', able: true }
     ]
+  },
+  methods: {
+    tag(attr) {
+      switch (attr) {
+        case 'example':
+          $.ajax({
+            url: './components.json',
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            success: function (data) {
+              ModalBox.example = data.example;
+            }
+          });
+          ModalBox.exampleStatus = true;
+          break;
+      }
+    }
   }
 });
 
@@ -61,27 +80,32 @@ var sidebar = new Vue({
     toggle(attr, index) {
       this.indexof = index;
       var rightSidebar = $('#rightSidebar');
+      if (attr === 'robot') {
+        robot.robotModalStatus = true;
+        robot.codeModalStatus = false;
+      }
+      if (attr === 'code') {
+        robot.codeModalStatus = true;
+        robot.robotModalStatus = false;
+      }
       if (this.status) {
         if (attr === this.active) {
           rightSidebar.animate({ 'right': -rightSidebar.innerWidth() + 'px' }, 'fast');
           this.status = false;
         } else {
-          $('.sidebarContent').html(attr);
           this.active = attr;
         }
       } else {
         rightSidebar.animate({ 'right': 0 }, 'fast');
-        $('.sidebarContent').html(attr);
         this.active = attr;
         this.status = true;
       }
-      console.log(this.active, this.status);
     }
   }
 });
 
 var mainNav = new Vue({
-  el: '#nav',
+  el: '.mainNav',
   data: {
     active: 1,
     tabs: [

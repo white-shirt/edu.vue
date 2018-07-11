@@ -42,7 +42,7 @@
                 <li v-for="(tab, index) in tabs" v-bind:class="{mainList: true, active: active===index}" v-on:click="toggle(index, tab.view)">{{ tab.name }}</li>
             </ul>
             <ul class="fnNav">
-                <li v-for="item in fnNav" v-bind:class="{fnList: true, able: item.able}">{{ item.name }}</li>
+                <li v-for="item in fnNav" v-bind:class="{fnList: true, able: item.able}" v-on:click="tag(item.attr)"><span>{{ item.name }}</span></li>
             </ul>
         </nav>
         <div id="mainContent">
@@ -125,7 +125,10 @@
                 <ul class="sidebarBtnGroup">
                     <li v-for="(item, index) in sidebars" v-if="item.able" v-bind:class="{ active: indexof === index }" v-on:click="toggle(item.attr, index)"><span class="sidebarMove">{{ item.name }}</span></li>
                 </ul>
-                <div class="sidebarContent">robot</div>
+                <div class="sidebarContent">
+                    <robot-modal v-if="robotModalStatus" v-bind:post="robotData"></robot-modal>
+                    <code-modal v-if="codeModalStatus" v-bind:post="codeData"></code-modal>
+                </div>
             </div>
         </div>
     </section>
@@ -133,6 +136,7 @@
         <login-modal v-if="loginModalStatus" v-bind:post="login"></login-modal>
         <register-modal v-if="registerModalStatus" v-bind:post="register"></register-modal>
         <stuinfo-modal v-if="stuInfoStatus" v-bind:post="stuInfo"></stuinfo-modal>
+        <example-modal v-if="exampleStatus" v-bind:post="example"></example-modal>
     </div>
     <div class="mask"></div>
     <script type="text/javascript">
@@ -143,6 +147,7 @@
             $('.codeCode').css({ 'display': 'none' });
         }
     </script>
+    <script src="js/ajax.js"></script>
     <script src="js/component.js"></script>
     <script src="js/edu.js"></script>
     <script src="js/Blocklyindex.js"></script>
