@@ -10,13 +10,13 @@
         { "name": "寻找小伙伴888", "img": "./img/example8.png", "difficulty": 2, "knowledge": "888动作", "story": "8888今天周末，蛋仔要去找他的好朋友蛋蛋玩，到蛋蛋家需要走一条“L形“的道路，快来帮帮蛋仔吧" }
     ],
     "robot": [
-        { "name": "蛋仔1", "deviceId": "111111", "flag": true },
-        { "name": "蛋仔2", "deviceId": "222222", "flag": false },
+        { "name": "蛋仔1", "deviceId": "111111", "flag": false },
+        { "name": "蛋仔2", "deviceId": "222222", "flag": true },
         { "name": "蛋仔3", "deviceId": "333333", "flag": false },
         { "name": "蛋仔4", "deviceId": "444444", "flag": false },
         { "name": "蛋仔5", "deviceId": "555555", "flag": true },
-        { "name": "蛋仔6", "deviceId": "666666", "flag": true },
+        { "name": "蛋仔6", "deviceId": "666666", "flag": false },
         { "name": "蛋仔7", "deviceId": "666666", "flag": false },
-        { "name": "蛋仔8", "deviceId": "666666", "flag": true }
+        { "name": "蛋仔8", "deviceId": "666666", "flag": false }
     ]
 }

@@ -3,7 +3,6 @@
  * @description    [edu.js]
  * @date           [2018.07.05]
  */
-
 var login = new Vue({
   el: '.signIn',
   data: {
@@ -28,9 +27,16 @@ var login = new Vue({
           break;
       }
     }
+  },
+  watch: {
+    status: function () {
+      if (this) {
+        this.sign.splice(0, this.sign.length);
+        this.sign.push({ name: '', attr: 'userAvatar' }, { name: '退出登录', attr: 'outSign' });
+      }
+    }
   }
 });
-
 //导航
 var fnNav = new Vue({
   el: '.fnNav',

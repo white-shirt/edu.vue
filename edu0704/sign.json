@@ -1,1 +1,16 @@
-true
+{
+  "rescode": 2001,
+  "resbody": {
+    "userInfo": {
+      "userName": "",
+      "userSex": "",
+      "userBirthday": "",
+      "userGrade": "",
+      "useravatar": ""
+    },
+    "eqInfo": [
+      { "deviceId": "11111111", "mac": "111111111111", "state": true, "lengthOfTime": "111", "lengthMeters": "111", "lengthfrequency": "111"},
+      { "deviceId": "22222222", "mac": "111111111111", "state": false, "lengthOfTime": "222", "lengthMeters": "222", "lengthfrequency": "222"}
+    ]
+  }
+}

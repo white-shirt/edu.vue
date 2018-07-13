@@ -1,16 +1,25 @@
+
 var loginModal = Vue.component('login-modal', {
   props: ['post'],
   data: function () {
-    return {}
+    return {
+      errInfo: '',
+      btntext: '登录',
+      disabled: false,
+      validity: false,
+      username: '',
+      password: ''
+    }
   },
   template: `<div class="login loginWrap">
                 <span class="close" v-on:click="close()"><i class="fa fa-times-circle"></i></span>
                 <div class="modalhead">aieggy | 欢迎登录</div>
                 <ul class="enterWrap">
-                  <li class="inputList"><span class="faIcon"><i class="fa fa-user"></i></span><input class="username" type="text" placeholder="请输入用户名" /></li>
-                  <li class="inputList"><span class="faIcon"><i class="fa fa-unlock-alt"></i></span><input class="password" type="password" placeholder="请输入密码" /></li>
+                  <li class="inputList"><span class="faIcon"><i class="fa fa-user"></i></span><input v-model="username" v-on:blur="onblur(username)" class="username" type="text" placeholder="请输入用户名" /></li>
+                  <li class="inputList"><span class="faIcon"><i class="fa fa-unlock-alt"></i></span><input v-model="password" v-on:blur="onblur(password)" class="password" type="password" placeholder="请输入密码" /></li>
                 </ul>
-                <div class="loginBtn" v-on:click="submit()">登录</div>
+                <span class="errInfo">{{ errInfo }}</span>
+                <div class="loginBtn"><button v-on:click="submit(username, password)" :disabled="disabled">{{ btntext }}</button></div>
                 <div class="bottomBtn">
                   <span class="botToRegister">立即注册</span>
                   <span class="botTofind">找回密码</span>
@@ -20,32 +29,73 @@ var loginModal = Vue.component('login-modal', {
     close() {
       ModalBox.loginModalStatus = false;
     },
-    submit() {
-      //when success remove login data update state
-      this.close();
-      console.log($('.username').val(), $('.password').val());
-      ModalBox.stuInfoStatus = true;
-      login.sign.splice(0, login.sign.length);
-      login.sign.push({ name: '', attr: 'userAvatar' }, { name: '退出登录', attr: 'outSign' });
-      //登录状态为true
-      login.status = true;
-      $.ajax({
-        url: './components.json',
-        type: 'GET',
-        dataType: "json",
-        async: false,
-        success: function (data) {
-          var robotData = new Array();
-          //数据排序 在线前 不在线后
-          if (data.robot) {
-            for (var i = 0; i < data.robot.length; i++) {
-              if (data.robot[i].flag === true) robotData.unshift(data.robot[i]);
-              if (data.robot[i].flag === false) robotData.push(data.robot[i]);
+    onblur(msg) {
+      if (msg === '') this.errInfo = '帐号密码不能为空';
+      else this.errInfo = '';
+    },
+    submitState() {
+      this.errInfo = '';
+      this.disabled = true;
+      this.btntext = '登录中';
+    },
+    submit(un, pwd) {
+      var _this = this;
+      if (un === '' || pwd === '') {
+        this.errInfo = "帐号密码不能为空";
+      } else {
+        this.submitState();
+        $.ajax({
+          url: './sign.json',
+          type: 'post',
+          dataType: 'json',
+          async: false,
+          data: {
+            username: un,
+            password: pwd
+          },
+          success: function (data) {
+            //2001成功返回数据
+            if (data.rescode == 2001) {
+              _this.close();
+              var robotData = new Array();
+              
+              if (data.resbody.userInfo.usernic) {
+                //完善了个人信息 登录状态为true
+                // login.status = true;
+                
+              } else {
+                //没有完善个人信息
+                ModalBox.stuInfoStatus = true;
+                ModalBox.loginTempData = data.resbody;
+              }
+            } else {
+              alert("服务器开小差啦~deng deng deng")
             }
-            robot.robotData = robotData;
+          },
+          error: function () {
+            alert("网络似乎有点不正常，请检查网络~")
           }
-        }
-      });
+        });
+
+      }
+      // when success remove login data update state
+      // $.ajax({
+      //   url: './components.json',
+      //   type: 'GET',
+      //   dataType: "json",
+      //   async: false,
+      //   success: function (data) {
+      //     var robotData = new Array();
+      //     //数据排序 在线前 不在线后
+      //     if (data.robot) {
+      //       for (var i = 0; i < data.robot.length; i++) {
+      //         if (data.robot[i].flag === true) robotData.unshift(data.robot[i]);
+      //         if (data.robot[i].flag === false) robotData.push(data.robot[i]);
+      //       }
+      //       robot.robotData = robotData;
+      //     }
+      //   }
+      // });
     }
   }
 });
@@ -128,6 +178,7 @@ var stuInfo = Vue.component('stuinfo-modal', {
       if (this.count > 4) {
         this.count = 4;
         console.log(this.name, this.imgsrc, this.year + '/' + this.month + '/' + this.day, this.sex, this.grade);
+        console.log(ModalBox.loginTempData.eqInfo)
       }
     },
     getGrade(gra, nm) {
@@ -192,14 +243,47 @@ var exampleModal = Vue.component('example-modal', {
   }
 });
 
+//this is addmac component
+var addmacModal = Vue.component('addmac-modal', {
+  data: function () {
+    return {}
+  },
+  template: `<div class="login addmacModal">
+              <span class="close" v-on:click="close()"><i class="fa fa-times-circle"></i></span>
+              <div class="modalhead">aieggy | 绑定机器人</div>
+              <div class="addmacWrap">
+                <span class="macIcon">MAC</span>
+                <input class="macInput" type="text" placeholder="请输入MAC地址" />           
+              </div>
+              <div v-on:click="submit()" class="boundBtn">绑定机器人</div>
+            </div>`,
+  methods: {
+    close() {
+      ModalBox.addmacStatus = false;
+    },
+    submit() {
+      var mockData = { "name": "蛋仔9", "deviceId": "111111", "flag": true };
+      if (robot.robotData === null) {
+        robot.robotData = [mockData];
+      } else {
+        if (mockData.flag === true) {
+          robot.robotData.unshift(mockData)
+        } else {
+          robot.robotData.push(mockData)
+        }
+      }
+      this.close();
+    }
+  }
+});
+
 //this is robot component
 var robotModal = Vue.component('robot-modal', {
   props: ['post'],
   data: function () {
     return {
       robotonline: './img/robotonline.png',
-      robotoffline: './img/robotoffline.png',
-      curRoName: ''
+      robotoffline: './img/robotoffline.png'
     }
   },
   template: `<div class="robotWrap">
@@ -211,17 +295,17 @@ var robotModal = Vue.component('robot-modal', {
                     <ul class="curRoIfWrap">
                       <li class="curRoIfList">
                         <span class="info">游戏时长</span>
-                        <span class="info">暂无数据</span>
+                        <span class="info">135</span>
                         <span class="info">小时</span>
                       </li>
                       <li class="curRoIfList">
                         <span class="info">刷卡次数</span>
-                        <span class="info">暂无数据</span>
+                        <span class="info">1077</span>
                         <span class="info">次</span>
                       </li>
                       <li class="curRoIfList">
                         <span class="info">行走里程</span>
-                        <span class="info">暂无数据</span>
+                        <span class="info">4367</span>
                         <span class="info">米</span>
                       </li>
                     </ul>
@@ -235,7 +319,7 @@ var robotModal = Vue.component('robot-modal', {
                   </div>
                   <span class="listName">{{ item.name }}</span>
                 </li>
-                <li class="addMac"><i class="fa fa-plus"></i></li>
+                <li v-on:click="addmac()" class="addMac"><i class="fa fa-plus"></i></li>
               </ul>
             </div>`,
   methods: {
@@ -245,10 +329,25 @@ var robotModal = Vue.component('robot-modal', {
         this.post.splice(index, 1);
         this.post.unshift(curItem);
       } else {
-        alert('请开启设备')
+        alert('请开启设备');
+      }
+    },
+    addmac() {
+      if (login.status) {
+        ModalBox.addmacStatus = true;
+      } else {
+        alert('请登录')
       }
     }
   }
+});
+
+var codeModal = Vue.component('code-modal', {
+  props: ['post'],
+  data: function () {
+    return {}
+  },
+  template: `<div>我是代码呀</div>`
 });
 
 var robot = new Vue({
@@ -267,14 +366,6 @@ var robot = new Vue({
   }
 });
 
-var codeModal = Vue.component('code-modal', {
-  props: ['post'],
-  data: function () {
-    return {}
-  },
-  template: `<div>我是代码呀</div>`
-});
-
 var ModalBox = new Vue({
   el: '.ModalBox',
   data: {
@@ -282,7 +373,9 @@ var ModalBox = new Vue({
     registerModalStatus: false,
     stuInfoStatus: false,
     exampleStatus: false,
+    addmacStatus: false,
     login: { count: 3 },
+    loginTempData: '',
     register: { count: 4 },
     stuInfo: [{ grade: '小班', name: 'child' }, { grade: '中班', name: 'child' }, { grade: '大班', name: 'child' }, { grade: '一年级', name: 'primary' }, { grade: '二年级', name: 'primary' }, { grade: '三年级', name: 'primary' }, { grade: '四年级', name: 'primary' }, { grade: '五年级', name: 'primary' }, { grade: '六年级', name: 'primary' }, { grade: '七年级', name: 'primary' }, { grade: '八年级', name: 'primary' }, { grade: '九年级', name: 'primary' }],
     example: null
@@ -291,7 +384,8 @@ var ModalBox = new Vue({
     'login-modal': loginModal,
     'register-modal': registerModal,
     'stuinfo-modal': stuInfo,
-    'example-modal': exampleModal
+    'example-modal': exampleModal,
+    'addmac-modal': addmacModal
   },
   //if data updated  update DOM
   updated: function () {
@@ -305,7 +399,7 @@ var ModalBox = new Vue({
 //mask toggle none and block
 function mask() {
   var mask = $('.mask');
-  if (ModalBox.loginModalStatus || ModalBox.registerModalStatus || ModalBox.stuInfoStatus || ModalBox.exampleStatus) {
+  if (ModalBox.loginModalStatus || ModalBox.registerModalStatus || ModalBox.stuInfoStatus || ModalBox.exampleStatus || ModalBox.addmacStatus) {
     mask.css({ 'display': 'block' });
   } else {
     mask.css({ 'display': 'none' });
