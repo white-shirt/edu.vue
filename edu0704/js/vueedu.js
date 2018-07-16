@@ -22,17 +22,22 @@ var login = new Vue({
           ModalBox.registerModalStatus = true;
           break;
         case 'outSign':
+          this.status = false;
           this.sign.splice(0, this.sign.length);
           this.sign.push({ name: '登录', attr: 'tosign' }, { name: '注册', attr: 'register' });
+          robot.robotData = null;
           break;
       }
     }
   },
   watch: {
     status: function () {
-      if (this) {
+      if (this.status) {
         this.sign.splice(0, this.sign.length);
         this.sign.push({ name: '', attr: 'userAvatar' }, { name: '退出登录', attr: 'outSign' });
+      } else {
+        this.sign.splice(0, this.sign.length);
+        this.sign.push({ name: '登录', attr: 'tosign' }, { name: '注册', attr: 'register' });
       }
     }
   }

@@ -58,44 +58,34 @@ var loginModal = Vue.component('login-modal', {
             if (data.rescode == 2001) {
               _this.close();
               var robotData = new Array();
-              
-              if (data.resbody.userInfo.usernic) {
+              //设备信息排序 在线排在前
+              if (data.resbody.eqInfo.length > 0) {
+                for (var i = 0; i < data.resbody.eqInfo.length; i++) {
+                  if (data.resbody.eqInfo[i].state === true) robotData.unshift(data.resbody.eqInfo[i]);
+                  if (data.resbody.eqInfo[i].state === false) robotData.push(data.resbody.eqInfo[i]);
+                }
+              }
+              if (data.resbody.userInfo.userName) {
                 //完善了个人信息 登录状态为true
-                // login.status = true;
-                
+                login.status = true;
+                //robot实例赋值设备信息
+                robot.robotData = robotData;
               } else {
                 //没有完善个人信息
                 ModalBox.stuInfoStatus = true;
-                ModalBox.loginTempData = data.resbody;
+                //临时储存设备信息
+                ModalBox.loginTempData = robotData;
               }
             } else {
               alert("服务器开小差啦~deng deng deng")
             }
           },
           error: function () {
-            alert("网络似乎有点不正常，请检查网络~")
+            alert("服务器开小差啦~deng deng deng")
           }
         });
 
       }
-      // when success remove login data update state
-      // $.ajax({
-      //   url: './components.json',
-      //   type: 'GET',
-      //   dataType: "json",
-      //   async: false,
-      //   success: function (data) {
-      //     var robotData = new Array();
-      //     //数据排序 在线前 不在线后
-      //     if (data.robot) {
-      //       for (var i = 0; i < data.robot.length; i++) {
-      //         if (data.robot[i].flag === true) robotData.unshift(data.robot[i]);
-      //         if (data.robot[i].flag === false) robotData.push(data.robot[i]);
-      //       }
-      //       robot.robotData = robotData;
-      //     }
-      //   }
-      // });
     }
   }
 });
@@ -103,17 +93,35 @@ var loginModal = Vue.component('login-modal', {
 var registerModal = Vue.component('register-modal', {
   props: ['post'],
   data: function () {
-    return {}
+    return {
+      errInfo: '',
+      unstate: false,
+      pwdstate: false,
+      cpwdstate: false,
+      prostate: false,
+      disabled: false,
+      btntext: '立即注册',
+      username: '',
+      password: '',
+      userproperty: '',
+      confirmpwd: '',
+      protext: [{ name: "学生", attr: 'student' }, { name: "学校", attr: 'school' }, { name: "机构", attr: 'educational' }],
+      curPro: null
+    }
   },
   template: `<div class="login registerWrap">
                 <span class="close" v-on:click="close()"><i class="fa fa-times-circle"></i></span>
                 <div class="modalhead">aieggy | 欢迎注册</div>
                 <ul class="enterWrap">
-                  <li class="inputList"><span class="faIcon"><i class="fa fa-user"></i></span><input class="username" type="text" placeholder="请输入用户名" /></li>
-                  <li class="inputList"><span class="faIcon"><i class="fa fa-lock"></i></span><input class="password" type="password" placeholder="请输入密码" /></li>
-                  <li class="inputList"><span class="faIcon"><i class="fa fa-unlock-alt"></i></span><input class="confirmpwd" type="password" placeholder="请确认密码" /></li>
+                  <li class="inputList"><span class="faIcon"><i class="fa fa-user"></i></span><input v-model="username" v-on:blur="onblur(username, 'un')" class="username" type="text" placeholder="请输入用户名" /></li>
+                  <li class="inputList"><span class="faIcon"><i class="fa fa-lock"></i></span><input v-model="password" v-on:blur="onblur(password, 'pwd')" class="password" type="password" placeholder="请输入密码" /></li>
+                  <li class="inputList"><span class="faIcon"><i class="fa fa-unlock-alt"></i></span><input v-model="confirmpwd" v-on:blur="onblur(confirmpwd, 'cpwd')" class="confirmpwd" type="password" placeholder="请确认密码" /></li>
+                  <ul class="propertyWrap">
+                    <li v-for="(item, index) in protext" v-on:click="userproperty = item.attr; curPro = index" v-bind:class="{ prolist: true, curPro: curPro === index }">{{ item.name }}</li>
+                  </ul>
                 </ul>
-                <div class="loginBtn" v-on:click="submit()">立即注册</div>
+                <span class="errInfo">{{ errInfo }}</span>
+                <div class="loginBtn"><button v-on:click="submit(username, password, userproperty)" :disabled="disabled">{{ btntext }}</button></div>
                 <div class="bottomBtn">
                   <span class="botToLogin">登录</span>
                 </div>
@@ -122,7 +130,75 @@ var registerModal = Vue.component('register-modal', {
     close() {
       //remove login data update state
       ModalBox.registerModalStatus = false;
-    }
+    },
+    submit(un, pwd, pro) {
+      var _this = this;
+      if (this.userproperty === '') this.errInfo = '请选择注册属性:学生、老师、机构';
+      else this.errInfo = '';
+      if (this.unstate && this.pwdstate && this.cpwdstate && this.userproperty !== '') {
+        console.log(this.username, this.password, this.userproperty);
+        this.btntext = '注册中';
+        this.disabled =  true;
+        $.ajax({
+          url: './register.json',
+          type: 'post',
+          async: false,
+          data: {
+            username: un,
+            password: pwd,
+            userproperty: pro
+          },
+          success: function (data) {
+            if (data.rescode == 200) {
+              _this.close();
+              ModalBox.loginModalStatus = true;
+            } else {
+              alert('服务器开小差啦~deng deng deng');
+            }
+          },
+          error: function () {
+            alert('服务器开小差啦~deng deng deng')
+          }
+        });
+      }
+    },
+    //失去焦点判断输入值是否合法
+    onblur(msg, el) {
+      switch (el) {
+        case 'un':
+          var reg = /^[a-zA-Z0-9]{4,11}$/;
+          if (reg.exec(msg)) {
+            this.errInfo = '';
+            this.unstate = true;
+          }
+          else {
+            this.errInfo = '用户名示例(4-11位字母和数字):eggtoy123';
+            this.unstate = false;
+          }
+        break;
+        case 'pwd':
+          var reg = /^.{6,20}$/;
+          if (reg.exec(msg)) {
+            this.errInfo = '';
+            this.pwdstate = true;
+          }
+          else {
+            this.errInfo = '密码长度6-20位';
+            this.pwdstate = false;
+          }
+        break;
+        case 'cpwd':
+          if (msg === this.password) {
+            this.errInfo = '';
+            this.cpwdstate = true;
+          }
+          else {
+            this.errInfo = '两次输入的密码不一致';
+            this.cpwdstate = false;
+          }
+        break;
+      }
+    },
   }
 });
 
@@ -133,11 +209,13 @@ var stuInfo = Vue.component('stuinfo-modal', {
       count: 1,
       name: '',
       imgsrc: './img/vm.png',
-      sex: 'boy',
+      sex: '',
       year: '2000',
       month: '10',
       day: '10',
-      grade: '一年级'
+      grade: '',
+      errInfo: '还没有创建完成哦~~',
+      disabled: false
     }
   },
   template: `<div class="login stuInfoWrap">
@@ -163,22 +241,46 @@ var stuInfo = Vue.component('stuinfo-modal', {
                       </ul>
                     </li>
                   </ul>
-                  <div class="next" v-on:click="next()">创建角色{{ count }}/4</div>
+                  <span v-if="disabled" class="errInfo">{{ errInfo }}</span>
+                  <button class="next" v-on:click="next()">创建角色{{ count }}/4</button>
                 </div>
               </div>
             </div>
             `,
   methods: {
     close() {
-      //remove login data update state
       ModalBox.stuInfoStatus = false;
     },
     next() {
-      this.count++;
-      if (this.count > 4) {
-        this.count = 4;
-        console.log(this.name, this.imgsrc, this.year + '/' + this.month + '/' + this.day, this.sex, this.grade);
-        console.log(ModalBox.loginTempData.eqInfo)
+      switch (this.count) {
+        case 1:
+          if (this.name === '') this.disabled = true;
+          else {
+            this.disabled = false;
+            this.count++;
+          }
+        break;
+        case 2:
+          if (this.sex === '') this.disabled = true;
+          else {
+            this.disabled = false;
+            this.count++;
+          }   
+        break;
+        case 3:
+          this.count++;
+        break;
+        case 4:
+          if (this.grade === '') this.disabled = true;
+          else {
+            this.disabled = false;
+            //提交创建的个人信息
+            console.log(this.name, this.imgsrc, this.year + '/' + this.month + '/' + this.day, this.sex, this.grade);
+            login.status = true;
+            robot.robotData = ModalBox.loginTempData;
+            this.close();
+          }
+        break;
       }
     },
     getGrade(gra, nm) {
@@ -188,6 +290,7 @@ var stuInfo = Vue.component('stuinfo-modal', {
   }
 });
 
+//example示例
 var exampleModal = Vue.component('example-modal', {
   props: ['post'],
   data: function () {
@@ -196,7 +299,8 @@ var exampleModal = Vue.component('example-modal', {
       curTitle: this.post[0].name,
       curKonw: this.post[0].knowledge,
       curDif: this.post[0].difficulty,
-      curStory: this.post[0].story
+      curStory: this.post[0].story,
+      curxml: this.post[0].xml
     }
   },
   template: `<div class="login example">
@@ -236,9 +340,17 @@ var exampleModal = Vue.component('example-modal', {
       this.curKonw = item.knowledge;
       this.curDif = item.difficulty;
       this.curStory = item.story;
+      this.curxml = item.xml;
     },
     showExa() {
-      console.log(this.curTitle);
+      //回到blockly编程页面
+      mainNav.toggle(1, 'blocklyCode');
+      var loadXml = confirm("是否要将模块替换成:" + this.curTitle);
+      if (loadXml) {
+        workspace.clear();
+        console.log(this.curxml)
+        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.curxml, workspace));
+      }
     }
   }
 });
@@ -289,23 +401,23 @@ var robotModal = Vue.component('robot-modal', {
   template: `<div class="robotWrap">
               <div class="curRoCard">
                 <div v-if="post !== null" class="curRoWrap">
-                  <img class="curRoImg" :src="post[0].flag === true ? robotonline : robotoffline" />
+                  <img class="curRoImg" :src="post[0].state === true ? robotonline : robotoffline" />
                   <div class="curRoInfoWrap">
-                    <span class="curRoTi">{{ post[0].name }}</span>
+                    <span class="curRoTi">{{ post[0].mac }}</span>
                     <ul class="curRoIfWrap">
                       <li class="curRoIfList">
                         <span class="info">游戏时长</span>
-                        <span class="info">135</span>
+                        <span class="info">{{ post[0].totaltime }}</span>
                         <span class="info">小时</span>
                       </li>
                       <li class="curRoIfList">
                         <span class="info">刷卡次数</span>
-                        <span class="info">1077</span>
+                        <span class="info">{{ post[0].totalcard }}</span>
                         <span class="info">次</span>
                       </li>
                       <li class="curRoIfList">
                         <span class="info">行走里程</span>
-                        <span class="info">4367</span>
+                        <span class="info">{{ post[0].totalmeters }}</span>
                         <span class="info">米</span>
                       </li>
                     </ul>
@@ -315,16 +427,16 @@ var robotModal = Vue.component('robot-modal', {
               <ul class="listWrap">
                 <li v-if="post !== null" v-for="(item, index) in post" class="robotlist" v-on:click="changeRo(item, index)">
                   <div class="imgWrap">
-                    <img class="listImg" :title="item.name" :src="item.flag ? robotonline : robotoffline" />
+                    <img class="listImg" :title="item.mac" :src="item.state ? robotonline : robotoffline" />
                   </div>
-                  <span class="listName">{{ item.name }}</span>
+                  <span class="listName">{{ item.mac }}</span>
                 </li>
                 <li v-on:click="addmac()" class="addMac"><i class="fa fa-plus"></i></li>
               </ul>
             </div>`,
   methods: {
     changeRo(item, index) {
-      if (item.flag) {
+      if (item.state) {
         var curItem = item;
         this.post.splice(index, 1);
         this.post.unshift(curItem);

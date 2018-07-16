@@ -1,16 +1,39 @@
 {
-  "rescode": 2001,
   "resbody": {
-    "userInfo": {
-      "userName": "",
-      "userSex": "",
-      "userBirthday": "",
-      "userGrade": "",
-      "useravatar": ""
-    },
-    "eqInfo": [
-      { "deviceId": "11111111", "mac": "111111111111", "state": true, "lengthOfTime": "111", "lengthMeters": "111", "lengthfrequency": "111"},
-      { "deviceId": "22222222", "mac": "111111111111", "state": false, "lengthOfTime": "222", "lengthMeters": "222", "lengthfrequency": "222"}
-    ]
-  }
+      "userInfo": {
+          "userSex": "",
+          "unionid": "",
+          "userGrade": "",
+          "openid": "",
+          "userName": "",
+          "deviceId": "29559341",
+          "userproperty": "学生",
+          "mac": "",
+          "userAge": "",
+          "password": "70f9203b8e467094ad90072c0463c2f7",
+          "useravatar": "",
+          "id": 9,
+          "phoneAccount": "4444",
+          "userBirthday": ""
+      },
+      "eqInfo": [
+          {
+              "totaltime": 394,
+              "totalmeters": 27,
+              "totalcard": 94,
+              "state": false,
+              "deviceId": "29559341",
+              "mac": "18FE34111111"
+          },
+          {
+              "totaltime": 40,
+              "totalmeters": 6,
+              "totalcard": 9,
+              "state": true,
+              "deviceId": "29559341",
+              "mac": "18FE34222222"
+          }
+      ]
+  },
+  "rescode": "2001"
 }
