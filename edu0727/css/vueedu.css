@@ -1,29 +1,29 @@
 /* header */
 #header {
   width: 100%;
-  height: 80px;
+  height: 50px;
 }
 
 .topLogo {
   width: 100%;
-  height: 80px;
+  height: 50px;
   background: rgb(255, 222, 0);
 }
 
 .logo {
   display: inline-block;
   width: auto;
-  height: 60px;
+  height: 30px;
   margin: 10px 10px 10px 50px;
 }
 
 .signIn {
   float: right;
   width: 250px;
-  height: 60px;
-  margin: 10px 50px 10px 10px;
+  height: 40px;
+  margin: 5px 50px 5px 10px;
   text-align: center;
-  line-height: 60px;
+  line-height: 40px;
 }
 
 .notLogin {
@@ -36,8 +36,8 @@
 }
 
 .notLogin li span {
-  font-size: 15px;
-  padding: 10px 20px;
+  font-size: 13px;
+  padding: 6px 15px;
   border-radius: 7px;
   cursor: pointer;
   background: #fff;
@@ -55,7 +55,7 @@
 #nav {
   position: absolute;
   width: 100%;
-  height: 80px;
+  height: 60px;
   overflow: hidden;
   background: rgb(198, 198, 198);
 }
@@ -70,10 +70,10 @@
 
 .mainList {
   display: inline-block;
-  font-size: 16px;
-  padding: 6px 30px;
+  font-size: 14px;
+  padding: 5px 25px;
   background: #fff;
-  margin: 0 5px;
+  margin: 0 10px;
   cursor: pointer;
   border-radius: 5px;
 }
@@ -96,10 +96,13 @@
 
 .fnList {
   display: inline-block;
-  font-size: 15px;
-  font-weight: bolder;
-  padding: 40px 25px;
   color: rgb(221, 221, 221);
+}
+
+.fnList span {
+  font-size: 14px;
+  font-weight: bolder;
+  padding: 20px 20px;
 }
 
 .able {
@@ -113,7 +116,7 @@
 #section {
   position: relative;
   width: 100%;
-  background: #dbdbdb;
+  background: #ffffff;
   z-index: 90;
 }
 
@@ -122,13 +125,35 @@
   width: 100%;
 }
 
+.ModalBox .noticeBox {
+  position: fixed;
+  top: 30%;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  padding: 20px 50px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 5px;
+  z-index: 500;
+}
+
+.ModalBox .confirmBox {
+  position: fixed;
+  width: 320px;
+  height: 140px;
+  top: 30%;
+  font-size: 14px;
+  border-radius: 10px;
+  background: rgb(255, 255, 255);
+}
+
 #rightSidebar {
   position: absolute;
   top: 0;
-  right: 0;
+  right: -350px;
   width: 350px;
   height: 100%;
-  padding: 10px 25px;
+  padding: 10px 10px;
   box-sizing: border-box;
   background: #fff;
   z-index: 100;
@@ -138,7 +163,7 @@
   display: flex;
   display: -webkit-flex;
   position: absolute;
-  top: 50px;
+  top: 10px;
   left: -50px;
   width: 40px;
   height: auto;
@@ -192,6 +217,10 @@
   height: 100%;
 }
 
+.pathCode {
+  background: rgba(0, 0, 0, 0.8);
+}
+
 /* section end */
 
 /* ModalBox */
@@ -210,6 +239,13 @@
   border-radius: 20px;
   background: #fff;
   overflow: hidden;
+}
+
+.login .cartoon {
+  display: block;
+  width: 400px;
+  height: auto;
+  margin: 0 auto;
 }
 
 .login .enterWrap {
@@ -507,11 +543,11 @@
   text-align: center;
 }
 
-.example {
+.example, .project {
   width: 1200px;
 }
 
-.example .exampleWrap {
+.example .exampleWrap, .project .projectWrap {
   display: flex;
   width: 100%;
   padding: 20px 40px;
@@ -520,7 +556,7 @@
   overflow: auto;
 }
 
-.example .current {
+.example .current, .project .current {
   position: relative;
   flex: 1;
   border-radius: 10px;
@@ -543,6 +579,36 @@
   line-height: 410px;
   color: #fff;
   background: rgba(0, 0, 0, 0.5);
+}
+
+.project .proBtnGp {
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.project .proBtnWrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.project .proBtnList button {
+  display: inline-block;
+  font-size: 13px;
+  width: 50%;
+  padding: 8px 18%;
+  border-radius: 5px;
+  background: rgb(255, 222, 0);
 }
 
 .current .curImg {
@@ -582,6 +648,13 @@
   color: rgb(0, 151, 167);
 }
 
+.current .curInfo .saveTime {
+  display: inline-block;
+  font-weight: 700;
+  margin-right: 10px;
+  color: rgb(0, 151, 167);
+}
+
 .current .curInfo .curkonw, .current .curInfo i {
   font-weight: 700;
   color: rgb(255, 166, 0);
@@ -601,11 +674,16 @@
   overflow: auto;
 }
 
+.current .curTime {
+  color: rgb(255, 166, 0);
+  font-size: 14px;
+}
+
 .current .curInfo .curStory::-webkit-scrollbar {
   display: none;
 }
 
-.example .exampleList {
+.example .exampleList, .project .projectList {
   flex: 2;
   margin-left: 40px;
   padding: 0 20px;
@@ -613,11 +691,11 @@
   overflow: auto;
 }
 
-.example .exampleList::-webkit-scrollbar {
+.example .exampleList::-webkit-scrollbar, .project .projectList::-webkit-scrollbar {
   display: none;
 }
 
-.example .exampleList .listWrap {
+.example .exampleList .listWrap, .project .projectList .listWrap {
   width: 100%;
   height: auto;
   display: flex;
@@ -814,16 +892,37 @@
   line-height: 115px;
 }
 
+.codeWrap {
+  width: 100%;
+  height: auto;
+  font-size: 12px;
+}
+
+.codeWrap .codeNotice {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  line-height: 40px;
+}
+
+.codeWrap .codes {
+  white-space: pre-wrap;
+}
 
 .login .addmacWrap {
   width: 100%;
-  height: 100px;
+  height: 80px;
   padding: 0 60px;
   box-sizing: border-box;
   display: flex;
   display: -webkit-flex;
   justify-content: center;
   align-items: center;
+}
+
+.login .saveWrap {
+  width: 100%;
+  height: auto;
 }
 
 .addmacWrap .macIcon {
@@ -844,7 +943,11 @@
   margin-left: 10px;
 }
 
-.addmacModal .boundBtn {
+.login .saveWrap .saveInput {
+  text-align: center;
+}
+
+.addmacModal .boundBtn, .saveModal .saveBtn {
   width: 60%;
   height: 40px;
   margin: 0 auto 20px;
@@ -853,8 +956,132 @@
   font-size: 17px;
   background: rgb(255, 222, 0);
   border-radius: 10px;
+  overflow: hidden;
   cursor: pointer;
 }
 
+.blocklyBtn {
+  position: absolute;
+  bottom: 25px;
+  right: 100px;
+  font-size: 60px;
+  width: auto;
+  height: auto;
+  cursor: pointer;
+  z-index: 200;
+}
+
+.saveModal {
+  width: 650px;
+  height: auto;
+}
+
+.saveModal .saveWrap {
+  overflow: hidden;
+}
+
+.saveModal .saveWrap .left {
+  float: left;
+  left: 0;
+  width: 60%;
+  height: auto;
+  padding: 30px 15px 15px 30px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.saveModal .saveWrap .right {
+  float: right;
+  right: 0;
+  width: 40%;
+  height: auto;
+  padding: 30px 15px 15px 30px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.saveModal .inputWrap {
+  width: 100%;
+  height: auto; 
+}
+
+.saveModal .nameWrap {
+  width: 100%;
+  height: 30px;
+  font-size: 15px;
+}
+
+.saveModal .name {
+  line-height: 30px;
+}
+
+.saveModal .nameWrap input {
+  display: inline-block;
+  width: 260px;
+  height: 30px;
+  font-size: 13px;
+}
+
+.saveModal .introWrap {
+  width: 100%;
+  height: auto;
+  margin-top: 40px;
+  font-size: 15px;
+  overflow: hidden;
+}
+
+.saveModal textarea {
+  width: 260px;
+  height: 100px;
+  float: right;
+  border: 2px solid #d0d0d0;
+  border-radius: 8px;
+  padding: 3px;
+  box-sizing: border-box;
+  font-size: 13px;
+  color: #444;
+}
+
+.saveModal .imgWrap {
+  text-align: center;
+  width: 100%;
+  height: auto;
+}
+
+.saveModal .img {
+  display: block;
+  width: 70%;
+  height: auto;
+  margin: 0 auto;
+}
 
 /* ModalBox end */
+
+
+/* @media screen and (max-width: 1400px) */
+
+@media screen and (max-width: 1400px) {
+  .example, .project, .loginWrap, .registerWrap, .saveModal, .addmacModal, .stuInfoWrap{
+    transform: scale(0.8);
+  }
+
+  .ModalBox {
+    top: 60px;
+  }
+
+  .blocklyTreeRow {
+    height: 60px;
+    line-height: 60px;
+  }
+
+  .sidebarBtnGroup li {
+    height: 120px;
+  }
+
+  .sidebarBtnGroup li span {
+    font-size: 13px;
+  }
+
+}
+
+/* @media screen and (max-width: 1400px) end */

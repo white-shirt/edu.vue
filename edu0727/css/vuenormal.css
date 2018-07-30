@@ -9,7 +9,7 @@ body {
   height: 100%;
   font-family: "SimHei", Tahoma, Helvetica, Arial, sans-serif;
   overflow: hidden;
-  min-width: 1400px;
+  min-width: 1300px;
   -moz-user-select:none;/*火狐*/
   -webkit-user-select:none;/*webkit浏览器*/
   -ms-user-select:none;/*IE10*/
@@ -42,6 +42,11 @@ input {
   background:none;  
 	outline:none;  
 	border:0px;
+}
+
+textarea {
+  outline:none;
+  resize:none;
 }
 
 .clear {

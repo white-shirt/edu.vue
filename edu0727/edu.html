@@ -6,8 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge, chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>aieggy编程</title>
+    <script src="js/vueloading.js"></script>
     <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="blockly/PCblockly_compressed.js?version=20180417"></script>
+    <script src="blockly/PCblockly_compressed.js"></script>
     <script src="blockly/javascript_compressed.js"></script>
     <script src="blockly/zh-hans.js"></script>
     <script src="js/blocks.js?version=20180417"></script>
@@ -17,6 +18,7 @@
     <script src="ace/theme-tomorrow_night_eighties.js" type="text/javascript" charset="utf-8"></script>
     <script src="ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link rel="shortcut icon" href="./img/favicon.ico">
     <link rel="stylesheet" href="./css/vuenormal.css"/>
     <link rel="stylesheet" href="./css/vueedu.css"/>
     <link rel="stylesheet" href="./css/vuepath.css"/>
@@ -101,16 +103,16 @@
                         <block type="blockly_eyesensor"></block>
                     </category>
                 </xml>
+                <div class="modalsend">
+                    <send-modal v-if="blocklyState" v-bind:deviceid="deviceId" v-bind:blocklydata="blocklyData"></send-modal>
+                </div>
             </div>
             <div class="contentWrap pathCode" style="display: block">
                 <canvas id="canvasBg"></canvas>
                 <canvas id="Connections"></canvas>
                 <canvas id="drawLine"></canvas>
-                <canvas id="sendAnimation"></canvas>
                 <div class="BtnWrap">
                   <ul>
-                    <li class="Btnlist"><button id="add" class="btngroup" data-attr = "add"></button></li>
-                    <li class="Btnlist"><button id="sub" class="btngroup" data-attr = "sub"></button></li>
                     <li class="Btnlist"><button id="repeal" class="btngroup" data-attr = "repeal"></button></li>
                     <li class="Btnlist"><button id="btn" class="btngroup" data-attr = "start"></button></li>
                   </ul>
@@ -122,7 +124,7 @@
                 </div>
             </div>
             <div id="rightSidebar">
-                <ul class="sidebarBtnGroup">
+                <ul class="sidebarBtnGroup">  
                     <li v-for="(item, index) in sidebars" v-if="item.able" v-bind:class="{ active: indexof === index }" v-on:click="toggle(item.attr, index)"><span class="sidebarMove">{{ item.name }}</span></li>
                 </ul>
                 <div class="sidebarContent">
@@ -138,6 +140,9 @@
         <stuinfo-modal v-if="stuInfoStatus" v-bind:post="stuInfo"></stuinfo-modal>
         <example-modal v-if="exampleStatus" v-bind:post="example"></example-modal>
         <addmac-modal v-if="addmacStatus"></addmac-modal>
+        <notice-modal v-if="noticeStatus" v-bind:msg="noticeMsg"></notice-modal>
+        <save-modal v-if="saveStatus" v-bind:userinfo="userSignInfo"></save-modal>
+        <project-modal v-if="projectStatus" v-bind:projectdata="userProjectData"></project-modal>
     </div>
     <div class="mask"></div>
     <script type="text/javascript">
@@ -149,9 +154,10 @@
         }
     </script>
     <script src="js/vueBlocklyindex.js"></script>
+    <script src="js/vueconstruction.js"></script>
     <script src="js/vuecomponent.js"></script>
     <script src="js/vueedu.js"></script>
-    <script src="js/vueblockly.js"></script>
+    <script src="js/vuesend.js"></script>
     <script src="js/vuecode.js"></script>
     <script src="js/vuepath.js"></script>
 </body>

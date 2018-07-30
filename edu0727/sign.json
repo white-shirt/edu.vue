@@ -7,13 +7,13 @@
           "openid": "",
           "userName": "",
           "deviceId": "29559341",
-          "userproperty": "学生",
+          "userproperty": "",
           "mac": "",
           "userAge": "",
           "password": "70f9203b8e467094ad90072c0463c2f7",
           "useravatar": "",
           "id": 9,
-          "phoneAccount": "4444",
+          "phoneAccount": "",
           "userBirthday": ""
       },
       "eqInfo": [
@@ -21,18 +21,23 @@
               "totaltime": 394,
               "totalmeters": 27,
               "totalcard": 94,
-              "state": false,
-              "deviceId": "29559341",
-              "mac": "18FE34111111"
+              "state": true,
+              "deviceId": "29559341"
           },
           {
               "totaltime": 40,
               "totalmeters": 6,
               "totalcard": 9,
-              "state": true,
-              "deviceId": "29559341",
-              "mac": "18FE34222222"
-          }
+              "state": false,
+              "deviceId": "31588446"
+          },
+          {
+            "totaltime": 45,
+            "totalmeters": 10,
+            "totalcard": 20,
+            "state": true,
+            "deviceId": "854683740"
+        }
       ]
   },
   "rescode": "2001"

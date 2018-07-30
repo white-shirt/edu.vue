@@ -21,13 +21,17 @@ var loginModal = Vue.component('login-modal', {
                 <span class="errInfo">{{ errInfo }}</span>
                 <div class="loginBtn"><button v-on:click="submit(username, password)" :disabled="disabled">{{ btntext }}</button></div>
                 <div class="bottomBtn">
-                  <span class="botToRegister">立即注册</span>
-                  <span class="botTofind">找回密码</span>
+                  <span class="botToRegister" v-on:click="toregister()">立即注册</span>
+                  <!-- <span class="botTofind">找回密码</span> -->
                 </div>
             </div>`,
   methods: {
     close() {
       ModalBox.loginModalStatus = false;
+    },
+    toregister() {
+      this.close();
+      ModalBox.registerModalStatus = true;
     },
     onblur(msg) {
       if (msg === '') this.errInfo = '帐号密码不能为空';
@@ -70,18 +74,22 @@ var loginModal = Vue.component('login-modal', {
                 login.status = true;
                 //robot实例赋值设备信息
                 robot.robotData = robotData;
+                //储存用户信息
+                ModalBox.userSignInfo = data.resbody.userInfo;
               } else {
                 //没有完善个人信息
                 ModalBox.stuInfoStatus = true;
                 //临时储存设备信息
                 ModalBox.loginTempData = robotData;
+                //临时储存用户信息
+                ModalBox.userTempSignInfo = data.resbody.userInfo;
               }
             } else {
-              alert("服务器开小差啦~deng deng deng")
+              ModalBox.noticeMsg = "服务器开小差啦~deng deng deng";
             }
           },
           error: function () {
-            alert("服务器开小差啦~deng deng deng")
+            ModalBox.noticeMsg = "服务器开小差啦~deng deng deng";
           }
         });
 
@@ -123,7 +131,7 @@ var registerModal = Vue.component('register-modal', {
                 <span class="errInfo">{{ errInfo }}</span>
                 <div class="loginBtn"><button v-on:click="submit(username, password, userproperty)" :disabled="disabled">{{ btntext }}</button></div>
                 <div class="bottomBtn">
-                  <span class="botToLogin">登录</span>
+                  <span class="botToLogin" v-on:click="tologin()">登录</span>
                 </div>
             </div>`,
   methods: {
@@ -131,10 +139,13 @@ var registerModal = Vue.component('register-modal', {
       //remove login data update state
       ModalBox.registerModalStatus = false;
     },
+    tologin() {
+      this.close();
+      ModalBox.loginModalStatus = true;
+    },
     submit(un, pwd, pro) {
       var _this = this;
       if (this.userproperty === '') this.errInfo = '请选择注册属性:学生、老师、机构';
-      else this.errInfo = '';
       if (this.unstate && this.pwdstate && this.cpwdstate && this.userproperty !== '') {
         console.log(this.username, this.password, this.userproperty);
         this.btntext = '注册中';
@@ -153,11 +164,11 @@ var registerModal = Vue.component('register-modal', {
               _this.close();
               ModalBox.loginModalStatus = true;
             } else {
-              alert('服务器开小差啦~deng deng deng');
+              ModalBox.noticeMsg = "服务器开小差啦~deng deng deng";
             }
           },
           error: function () {
-            alert('服务器开小差啦~deng deng deng')
+            ModalBox.noticeMsg = "服务器开小差啦~deng deng deng";
           }
         });
       }
@@ -170,8 +181,7 @@ var registerModal = Vue.component('register-modal', {
           if (reg.exec(msg)) {
             this.errInfo = '';
             this.unstate = true;
-          }
-          else {
+          } else {
             this.errInfo = '用户名示例(4-11位字母和数字):eggtoy123';
             this.unstate = false;
           }
@@ -181,8 +191,7 @@ var registerModal = Vue.component('register-modal', {
           if (reg.exec(msg)) {
             this.errInfo = '';
             this.pwdstate = true;
-          }
-          else {
+          } else {
             this.errInfo = '密码长度6-20位';
             this.pwdstate = false;
           }
@@ -191,8 +200,7 @@ var registerModal = Vue.component('register-modal', {
           if (msg === this.password) {
             this.errInfo = '';
             this.cpwdstate = true;
-          }
-          else {
+          } else {
             this.errInfo = '两次输入的密码不一致';
             this.cpwdstate = false;
           }
@@ -275,9 +283,10 @@ var stuInfo = Vue.component('stuinfo-modal', {
           else {
             this.disabled = false;
             //提交创建的个人信息
-            console.log(this.name, this.imgsrc, this.year + '/' + this.month + '/' + this.day, this.sex, this.grade);
+            console.log(this.name, this.imgsrc, this.year + '/' + this.month + '/' + this.day, this.sex, this.grade, this.imgsrc);
             login.status = true;
             robot.robotData = ModalBox.loginTempData;
+            ModalBox.userSignInfo = ModalBox.userTempSignInfo;
             this.close();
           }
         break;
@@ -346,48 +355,280 @@ var exampleModal = Vue.component('example-modal', {
       //回到blockly编程页面
       mainNav.toggle(1, 'blocklyCode');
       var loadXml = confirm("是否要将模块替换成:" + this.curTitle);
+      // ModalBox.confirmMsg = "是否要将模块替换成:" + this.curTitle;
       if (loadXml) {
         workspace.clear();
-        console.log(this.curxml)
-        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.curxml, workspace));
+        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.curxml), workspace);
+        this.close();
       }
     }
   }
 });
 
-//this is addmac component
+
+//绑定机器人组件
 var addmacModal = Vue.component('addmac-modal', {
   data: function () {
-    return {}
+    return {
+      btntext: "绑定机器人",
+      mac: "",
+      errInfo: ""
+    }
   },
   template: `<div class="login addmacModal">
               <span class="close" v-on:click="close()"><i class="fa fa-times-circle"></i></span>
               <div class="modalhead">aieggy | 绑定机器人</div>
               <div class="addmacWrap">
                 <span class="macIcon">MAC</span>
-                <input class="macInput" type="text" placeholder="请输入MAC地址" />           
+                <input v-model="mac" v-on:blur="onblur()" class="macInput" type="text" placeholder="请输入MAC地址" />
               </div>
-              <div v-on:click="submit()" class="boundBtn">绑定机器人</div>
+              <span class="errInfo">{{ errInfo }}</span>
+              <div class="boundBtn"><button v-on:click="submit()">{{ btntext }}</button></div>
             </div>`,
   methods: {
     close() {
       ModalBox.addmacStatus = false;
     },
-    submit() {
-      var mockData = { "name": "蛋仔9", "deviceId": "111111", "flag": true };
-      if (robot.robotData === null) {
-        robot.robotData = [mockData];
+    onblur() {
+      if (this.mac === '') {
+        this.errInfo = "mac地址不能为空";
+        return false;
       } else {
-        if (mockData.flag === true) {
-          robot.robotData.unshift(mockData)
-        } else {
-          robot.robotData.push(mockData)
+        if (this.mac.indexOf('18FE34') === -1 || this.mac.length !== 12) {
+          this.errInfo = "mac格式不正确";
+          return false;
         }
       }
-      this.close();
+      this.errInfo = "";
+      return true;
+    },
+    submit() {
+      console.log(ModalBox.userSignInfo.phoneAccount, this.mac);
+      var _this = this;
+      if (_this.onblur()) {
+        this.btntext = "绑定中";
+        $.ajax({
+          url: './addmac.json',
+          dataType: 'json',
+          async: false,
+          data: {
+            phoneAccount: ModalBox.userSignInfo.phoneAccount,
+            mac: this.mac
+          },
+          success: function (data) {
+            if (data.rescode == 20010) {
+              if (robot.robotData === null) robot.robotData = [ data.resbody.eqInfo ];
+              else {
+                if (data.resbody.eqInfo.state === true) robot.robotData.unshift(data.resbody.eqInfo);
+                else robot.robotData.push(data.resbody.eqInfo);
+              }
+              _this.close();
+            } else {
+              ModalBox.noticeMsg = "服务器开小差啦~deng deng deng";
+            }
+          },
+          error: function () {
+            ModalBox.noticeMsg = "服务器开小差啦~deng deng deng";
+          }
+        });
+      }
     }
   }
 });
+
+//保存模块组件
+var saveModal = Vue.component('save-modal', {
+  props: ['userinfo'],
+  data: function () {
+    return {
+      phoneAccount: this.userinfo.phoneAccount,
+      errInfo: '',
+      btntext: '保存',
+      saveName: '',
+      disabled: false,
+      saveName: '',
+      saveIntro: '',
+      saveImg: './img/example_7.png'
+    }
+  },
+  template: `<div class="login saveModal">
+              <span class="close" v-on:click="close()"><i class="fa fa-times-circle"></i></span>
+              <div class="modalhead">aieggy | 保存blockly作品</div>
+              <div class="saveWrap">
+                <div class="left">
+                  <div class="inputWrap">
+                    <div class="nameWrap"><span class="name">作品名称<span style="color: red;">*</span></span><input v-model="saveName" v-on:blur="onblur()" class="nameInput" type="text" maxlength="15" placeholder="为你的作品取个名字吧" /></div>
+                    <div class="introWrap">
+                      <span class="intro">作品简介</span>
+                      <textarea v-model="saveIntro" v-on:blur="onblur()" maxlength="100" placeholder="介绍一下你的作品吧"></textarea>
+                    </div>
+                  </div>
+                  <span class="errInfo">{{ errInfo }}</span>
+                </div>
+                <div class="right">
+                  <div class="imgWrap">
+                    <img class="img" src="./img/example_7.png" />
+                    <span style="font-size: 12px; color: #666;">作品封面</span>
+                  </div>  
+                </div>
+                <div class="saveBtn"><button v-on:click="submit()" :disabled="disabled">{{ btntext }}</button></div>   
+              </div>
+            </div>`,
+  methods: {
+    close() {
+      ModalBox.saveStatus = false;
+    },
+    onblur() {
+      if (this.saveName === '') {
+        this.errInfo = "作品名称不能为空哟~";
+        return false;
+      } else {
+        this.errInfo = "";
+        return true;
+      }
+    },
+    submit() {
+      if (login.status) {
+        var blocks = workspace.getAllBlocks();
+        if (blocks.length === 0) {
+          this.errInfo = "蛋仔没有检测到要保存的模块哟~";
+          return;
+        }
+        if (this.onblur()) {
+          this.btntext = "保存中"
+          this.errInfo = '';
+          var timestamp = new Date().getTime();
+          var xml = Blockly.Xml.workspaceToDom(workspace);
+          var xmlText = Blockly.Xml.domToText(xml);
+          xmlText = xmlText.replace(/"/g, "'");
+          var year = new Date().getFullYear();
+          var month = new Date().getMonth() + 1;
+          var day = new Date().getDate();
+          var saveTime = year + "年" + month + "月" + day + "日";
+          console.log(this.phoneAccount, this.saveName, saveTime, timestamp, this.saveIntro, this.saveImg, xmlText);
+          ModalBox.noticeMsg = "保存成功";
+          this.close();
+        } else {
+          this.errInfo = "作品名称不能为空哟~";
+        }
+      } else {
+        ModalBox.noticeMsg = "您还没登录呢~"
+      }
+    }
+  }
+});
+
+//我的项目模块
+var projectModal = Vue.component('project-modal', {
+  props: ['projectdata'],
+  data: function () {
+    return {
+      index: 0,
+      disable: false,
+      curImg: this.projectdata[0].saveImg,
+      curName: this.projectdata[0].saveName,
+      curIntro: this.projectdata[0].intro,
+      curTime: this.projectdata[0].saveTime,
+      xmlText: this.projectdata[0].xmlText,
+      phoneAccount: this.projectdata[0].phoneAccount,
+      timestamp: this.projectdata[0].timestamp
+    }
+  },
+  template: `<div class="login project">
+              <span class="close" v-on:click="close()"><i class="fa fa-times-circle"></i></span>
+              <div class="modalhead">aieggy | 我保存的项目</div>
+              <div class="projectWrap">
+                <div class="current" v-on:mouseover="over()" v-on:mouseout="out()">
+                  <div class="curImg">
+                    <img :src="curImg" />
+                  </div>
+                  <div class="curInfo">
+                    <h2 class="curtitle">{{ curName }}</h2>
+                    <p class="curStory">{{ curIntro }}</p>
+                    <span class="know"><span class="saveTime">保存时间:</span><span class="curTime">{{ curTime }}</span></span>
+                  </div>
+                  <div class="proBtnGp">
+                    <ul class="proBtnWrap">
+                      <li class="proBtnList proCheck"><button :disabled="disable" v-on:click="check()">查 看</button></li>
+                      <li class="proBtnList proDel"><button :disabled="disable" v-on:click="del()">删 除</button></li>
+                      <li class="proBtnList proPush"><button :disabled="disable" v-on:click="push()">发 布</button></li>
+                    </ul>  
+                  </div>
+                </div>
+                <div class="exampleList projectList">
+                  <ul class="listWrap">
+                    <li class="list" v-on:click="curPro(item, index)" v-for="(item, index) in projectdata">
+                      <div class="liImgWrap">
+                        <img class="liImg" :src="item.saveImg" />
+                      </div>
+                      <span class="liname">{{ item.saveName }}</span>
+                    </li>
+                  </ul>
+                </div>  
+              </div>
+            </div>`,
+  methods: {
+    close() {
+      ModalBox.projectStatus = false;
+    },
+    init() {
+      this.index = 0;
+      this.disable = false;
+      this.curImg = this.projectdata[0].saveImg;
+      this.curName = this.projectdata[0].saveName;
+      this.curIntro = this.projectdata[0].intro;
+      this.curTime = this.projectdata[0].saveTime;
+      this.xmlText = this.projectdata[0].xmlText;
+      this.phoneAccount = this.projectdata[0].phoneAccount;
+      this.timestamp = this.projectdata[0].timestamp;
+    },
+    curPro(item, index) {
+      this.index = index;
+      this.curImg = item.saveImg;
+      this.curName = item.saveName;
+      this.curIntro = item.intro;
+      this.curTime =  item.saveTime;
+      this.xmlText = item.xmlText;
+      this.timestamp = item.timestamp;
+    },
+    over() {
+      $('.proBtnGp').css({ 'display': 'block' });
+    },
+    out() {
+      $('.proBtnGp').css({ 'display': 'none' });
+    },
+    check() {
+      //回到blockly编程页面
+      mainNav.toggle(1, 'blocklyCode');
+      workspace.clear();
+      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.xmlText), workspace);
+      this.close();
+    },
+    push() {
+      ModalBox.noticeMsg = "蛋仔说抱歉，发布功能还未开放呢~";
+    },
+    del() {
+      if (this.projectdata.length > 1) {
+        this.projectdata.splice(this.index, 1);
+        this.init();
+      } else {
+        this.close()
+      }
+    }
+  }
+});
+
+//alert弹框
+var noticeModal = Vue.component('notice-modal', {
+  props: ['msg'],
+  data: function () {
+    return {
+      
+    }
+  },
+  template: `<div class="noticeBox">{{ msg }}</div>`,
+});
+
 
 //this is robot component
 var robotModal = Vue.component('robot-modal', {
@@ -441,14 +682,14 @@ var robotModal = Vue.component('robot-modal', {
         this.post.splice(index, 1);
         this.post.unshift(curItem);
       } else {
-        alert('请开启设备');
+        ModalBox.noticeMsg = "机器人好像睡着了~快叫醒它";
       }
     },
     addmac() {
       if (login.status) {
         ModalBox.addmacStatus = true;
       } else {
-        alert('请登录')
+        ModalBox.noticeMsg = "您还没登录呢~"
       }
     }
   }
@@ -457,9 +698,13 @@ var robotModal = Vue.component('robot-modal', {
 var codeModal = Vue.component('code-modal', {
   props: ['post'],
   data: function () {
-    return {}
+    return {
+
+    }
   },
-  template: `<div>我是代码呀</div>`
+  template: `<div class="codeWrap">
+              <p class="codes">{{ post ? post : '抱歉~蛋仔没有检测到模块' }}</p>
+            </div>`
 });
 
 var robot = new Vue({
@@ -468,52 +713,157 @@ var robot = new Vue({
     robotModalStatus: true,
     codeModalStatus: false,
     robotData: null,
-    codeData: [
-
-    ]
+    codeData: null
   },
   components: {
     'robot-modal': robotModal,
     'code-modal': codeModal
+  },
+  watch: {
+    robotData: function () {
+      sendBox.deviceId = this.robotData;
+    }
   }
 });
 
+//弹框组件实例 储存了很多信息
 var ModalBox = new Vue({
   el: '.ModalBox',
   data: {
+    userSignInfo: '',
+    userTempSignInfo: '',
     loginModalStatus: false,
     registerModalStatus: false,
     stuInfoStatus: false,
     exampleStatus: false,
     addmacStatus: false,
+    noticeStatus: false,
+    saveStatus: false,
+    projectStatus: false,
     login: { count: 3 },
     loginTempData: '',
     register: { count: 4 },
     stuInfo: [{ grade: '小班', name: 'child' }, { grade: '中班', name: 'child' }, { grade: '大班', name: 'child' }, { grade: '一年级', name: 'primary' }, { grade: '二年级', name: 'primary' }, { grade: '三年级', name: 'primary' }, { grade: '四年级', name: 'primary' }, { grade: '五年级', name: 'primary' }, { grade: '六年级', name: 'primary' }, { grade: '七年级', name: 'primary' }, { grade: '八年级', name: 'primary' }, { grade: '九年级', name: 'primary' }],
-    example: null
+    example: null,
+    noticeMsg: null,
+    userProjectData: null
   },
   components: {
     'login-modal': loginModal,
     'register-modal': registerModal,
     'stuinfo-modal': stuInfo,
     'example-modal': exampleModal,
-    'addmac-modal': addmacModal
+    'addmac-modal': addmacModal,
+    'notice-modal': noticeModal,
+    'save-modal': saveModal,
+    'project-modal': projectModal
   },
   //if data updated  update DOM
   updated: function () {
+    var _this = this;
+    //打开遮罩
     mask();
+    //弹框居中
     $('.ModalBox').css({ 'left': 50 + '%', 'marginLeft': -$('.login').innerWidth() / 2 + 'px' });
+    $('.noticeBox').css({ 'left': 50 + '%', 'marginLeft': -$('.noticeBox').innerWidth() / 2 + 'px' });
+  },
+  watch: {
+    //alert弹框自动隐藏
+    noticeMsg: function () {
+      var _this = this;
+      if (this.noticeMsg !== null) {
+        this.noticeStatus = true;
+        function hidenotice() {
+          _this.noticeStatus = false;
+          _this.noticeMsg = null;
+        };
+        alertT = setTimeout(hidenotice, 2000);
+      }
+    }
   }
 });
 
 
+//发送命令组件
+var sendModal = Vue.component('send-modal', {
+  props: ['deviceid', 'blocklydata'],
+  data: function () {
+    return {
+      disabled: false
+    }
+  },
+  template: `<button class="blocklyBtn" v-on:click="sendData()" :disabled="disabled"><i class="fa fa-youtube-play"></i></button>`,
+  methods: {
+    sendData() {
+      var _this = this;
+      //登录状态
+      if (login.status === true) {
+        //this.deviceid.length === 0 没有deviceId传入 判断没有绑定设备
+        if (this.deviceid.length === 0) {
+          ModalBox.noticeMsg = "蛋蛋没有找到您绑定的机器人~";
+          return;
+        } else {
+          //有deviceId传入 但是查询到关机状态
+          if (this.deviceid[0].state === false) {
+            ModalBox.noticeMsg = "机器人好像睡着了~快叫醒它";
+            return;
+          } 
+        }
+        var code = Blockly.JavaScript.workspaceToCode(workspace);
+        //construction.js 命令数组
+        aieggy.codeArr = [];
+        eval(code);
+        if (aieggy.codeArr.length === 0) {
+          ModalBox.noticeMsg = "蛋蛋检测不到命令模块哟~";
+        } else {
+          this.disabled = true;
+          for (var i = 0; i < aieggy.codeArr.length; i++) {
+            aieggy.codeArr[i].data.unshift(i);
+          }
+          var firstOrder = { "cmd": 0, "data": [aieggy.codeArr.length] };
+          aieggy.codeArr.unshift(firstOrder);
+          var count = 0;
+          var t;
+          function send() {
+            console.log(aieggy.codeArr[count]);
+            clearTimeout(alertT);
+            ModalBox.noticeMsg = "蛋蛋正在接收第" + count + "条指令";
+            count++;
+            t = setTimeout(send, 300);
+            if (count === aieggy.codeArr.length) {
+              clearTimeout(t);
+              ModalBox.noticeMsg = "蛋蛋已经接收完数据啦~";
+              _this.disabled = false;
+            }
+          }
+          send();
+        }
+      } else {
+        ModalBox.noticeMsg = '您还没登录呢~';
+      }
+    }
+  }
+});
+
+var sendBox = new Vue({
+  el: '.modalsend',
+  data: {
+    deviceId: null,
+    blocklyData: null,
+    blocklyState: true
+  },
+  components: {
+    'send-modal': sendModal
+  }
+});
 
 //mask toggle none and block
 function mask() {
   var mask = $('.mask');
-  if (ModalBox.loginModalStatus || ModalBox.registerModalStatus || ModalBox.stuInfoStatus || ModalBox.exampleStatus || ModalBox.addmacStatus) {
+  if (ModalBox.loginModalStatus || ModalBox.registerModalStatus || ModalBox.stuInfoStatus || ModalBox.exampleStatus || ModalBox.addmacStatus || ModalBox.saveStatus || ModalBox.projectStatus) {
     mask.css({ 'display': 'block' });
   } else {
     mask.css({ 'display': 'none' });
   }
 };
+

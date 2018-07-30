@@ -6,12 +6,10 @@
   var canvasBg = document.querySelector('#canvasBg');
   var Connections = document.querySelector('#Connections');
   var drawLine = document.querySelector('#drawLine');
-  var sendAnimation = document.querySelector('#sendAnimation');
   var btngroup = document.querySelectorAll('.btngroup');
   var ctxBg = canvasBg.getContext('2d');
   var ctxConnections = Connections.getContext('2d');
   var ctxDrawline = drawLine.getContext('2d');
-  var ctxsendAnimation = sendAnimation.getContext('2d');
   var canvasWidth = canvasBg.parentElement.offsetWidth;
   var canvasHeight = canvasBg.parentElement.offsetHeight * 0.9;
 /**
@@ -48,20 +46,6 @@
     ctxDrawline.scale(window.devicePixelRatio, window.devicePixelRatio);
   }
 })();
-(function initsendAnimation(){
-  sendAnimation.style.display = "none";
-  sendAnimation.width = canvasWidth;
-  sendAnimation.height = canvasHeight;
-  sendAnimation.style.background = "rgba(255,255,255,0)";
-  var width = sendAnimation.width, height = sendAnimation.height;
-  if (window.devicePixelRatio) {
-    sendAnimation.style.width = width + "px";
-    sendAnimation.style.height = height + "px";
-    sendAnimation.height = height * window.devicePixelRatio;
-    sendAnimation.width = width * window.devicePixelRatio;
-    ctxsendAnimation.scale(window.devicePixelRatio, window.devicePixelRatio);
-  }
-})();
 (function initBtngroup(){
   var BtnWrap = document.querySelector('.BtnWrap');
   BtnWrap.style.top = canvasHeight + "px";
@@ -81,25 +65,25 @@ var sendOrderArr = [];
 var ConnectionsObj = function () {
   this.x = [];
   this.y = [];
-  this.num = 64;
-  this.r = 3;
+  this.r = 0.5;
+  this.dis = 20;
   this.width = 1;
-  this.color = "#cff1f3";
+  this.color = "#888";
 };
 ConnectionsObj.prototype.init = function () {
-  for (var i = 1; i < Math.sqrt(this.num) - 1; i++) {
+  for (var i = 1; i < Math.round(canvasWidth / this.dis); i++) {
     this.x[i] = new Array();
     this.y[i] = new Array();
-    for (var j = 1; j < Math.sqrt(this.num) + 4; j++) {
-      this.x[i][j] = Math.round(canvasWidth / (Math.sqrt(this.num) - 1)) * i;
-      this.y[i][j] = Math.round(canvasHeight / (Math.sqrt(this.num) + 4)) * j;
+    for (var j = 1; j < Math.round(canvasHeight / this.dis); j++) {
+      this.x[i][j] = Math.round(canvasWidth / Math.round(canvasWidth / this.dis)) * i;
+      this.y[i][j] = Math.round(canvasHeight / Math.round(canvasHeight / this.dis)) * j;
     }
   }
 };
 ConnectionsObj.prototype.draw = function () {
   ctxConnections.clearRect(0, 0, canvasWidth, canvasHeight);
-  for (var i = 1; i < Math.sqrt(this.num) - 1; i++) {
-    for (var j = 1; j < Math.sqrt(this.num) + 4; j++) {
+  for (var i = 1; i < Math.round(canvasWidth / this.dis); i++) {
+    for (var j = 1; j < Math.round(canvasHeight / this.dis); j++) {
       ctxConnections.strokeStyle = this.color;
       ctxConnections.fillStyle = this.color;
       ctxConnections.lineWidth = this.width;
@@ -129,11 +113,11 @@ var DrawLineObj = function () {
 };
 DrawLineObj.prototype.init = function () {
   this.connectionsArr = [];
-  ctxDrawline.clearRect(0, 0, drawLine.width, drawLine.height);  
+  ctxDrawline.clearRect(0, 0, canvasWidth, canvasHeight);
 };
 DrawLineObj.prototype.choosePoint = function (x, y) {
-  var xIndex = Math.round(x / (canvasWidth / (Math.sqrt(matrix.num) - 1)));
-  var yIndex = Math.round(y / (canvasHeight / (Math.sqrt(matrix.num) + 4)));
+  var xIndex = Math.round(x / (canvasWidth / Math.round(canvasWidth / matrix.dis)));
+  var yIndex = Math.round(y / (canvasHeight / Math.round(canvasHeight / matrix.dis)));
   xIndex === 0 ? xIndex = 1 : xIndex = xIndex;
   yIndex === 0 ? yIndex = 1 : yIndex = yIndex;
   xIndex === matrix.x[1].length ? xIndex = matrix.x[1].length - 1 : xIndex = xIndex;
@@ -177,50 +161,6 @@ DrawLineObj.prototype.drawline = function () {
 };
 var points = new DrawLineObj();
 
-/***************************Ball Animation**********************************/
-var raf;
-var ball = {
-  x: canvasWidth * Math.random() / 1.2,
-  y: canvasWidth * 0.1,
-  vx: 2,
-  vy: 1,
-  radius: 15,
-  color: '#0fc7d8',
-  draw: function() {
-    if (this.y > canvasHeight - this.radius) this.y = canvasHeight - this.radius;
-    ctxsendAnimation.beginPath();
-    ctxsendAnimation.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
-    ctxsendAnimation.closePath();
-    ctxsendAnimation.fillStyle = this.color;
-    ctxsendAnimation.fill();
-  },
-  init: function () {
-    window.cancelAnimationFrame(raf);
-    sendAnimation.style.display = "none";
-    this.x = canvasWidth * Math.random() / 1.2;
-    this.y = canvasHeight * 0.1;
-    this.vx = 2;
-    this.vy = 1;
-  }
-};
-function drawBall() {
-  sendAnimation.style.display = "block";
-  ctxsendAnimation.clearRect(0, 0, canvasWidth, canvasHeight);
-  ball.draw();
-  ball.vy *= 0.991;
-  ball.vy += .4;
-  ball.x += ball.vx * 2;
-  ball.y += ball.vy;
-  if (ball.y + ball.vy > canvasHeight - ball.radius || ball.y + ball.vy < 0) {
-    ball.vy = -ball.vy;
-  }
-  if (ball.x + ball.vx > canvasWidth - ball.radius || ball.x + ball.vx < 0) {
-    ball.vx = -ball.vx;
-  }
-  raf = window.requestAnimationFrame(drawBall);
-};
-/****************************Ball Animation end*********************************/
-
 /**
  * @param {connectionsArr}  arr
  */
@@ -229,8 +169,9 @@ function toOrder(arr) {
     for (var i = 0; i < arr.length - 1; i++) {
       var disX = Math.pow(arr[i].x - arr[i + 1].x, 2);
       var disY = Math.pow(arr[i].y - arr[i + 1].y, 2);
-      var step = Math.round(Math.sqrt(disX + disY) / (canvasWidth / (Math.sqrt(matrix.num) - 1)));
-      sendOrderArr.push({ "cmd": 1, "data": [1500 * step, 50, 1] });
+      var step = Math.sqrt(disX + disY) / (matrix.dis * 3);
+      console.log(step)
+      sendOrderArr.push({ "cmd": 1, "data": [Math.round(1500 * step), 50, 1] });
       if (i < arr.length - 2) {
         var toAngle = new toAngleObj(arr[i].x,arr[i].y,arr[i + 1].x,arr[i + 1].y,arr[i + 2].x,arr[i + 2].y);
       }
@@ -284,23 +225,9 @@ var toAngleObj = function (x1,y1,x2,y2,x3,y3) {
  * class AddSubBtnObj
  */
 var AddSubBtnObj = function () {
-  this.index = Math.sqrt(matrix.num);
+
 };
 AddSubBtnObj.prototype.tap = function (attr) {
-  if (attr === 'add') {
-    this.index++;
-    if (this.index >= 13) {
-      this.index = 13;
-    }
-    sendOrderArr = [];
-  }
-  if (attr === 'sub') {
-    this.index--;
-    if (this.index <= 5) {
-      this.index = 5;
-    }
-    sendOrderArr = [];
-  };
   if (attr === 'repeal') {
     if (points.connectionsArr.length >= 1) {
       points.connectionsArr.splice(points.connectionsArr.length - 1, 1);
@@ -312,24 +239,32 @@ AddSubBtnObj.prototype.tap = function (attr) {
   if (attr === 'start') {
     sendOrderArr = [];
     toOrder(points.connectionsArr);
-    console.log(sendOrderArr);
-    // var Datas = document.getElementById("DeviceId").value;
-    if (sendOrderArr.length > 0) {
-      raf = window.requestAnimationFrame(drawBall);
-      btnSwitch('off');
-      for (var i = 0; i < sendOrderArr.length; i++) {
-        sendOrderArr[i].data.unshift(i);
+    if (login.status === true) {
+      if (sendBox.deviceId.length === 0) {
+        ModalBox.noticeMsg = "蛋仔没有找到您绑定的机器人~";
+        return;
+      } else {
+        if (sendBox.deviceId[0].state === false) {
+          ModalBox.noticeMsg = "机器人好像睡着了~快叫醒它";
+          return;
+        }
       }
-      var firstOrder = { "cmd": 0, "data": [sendOrderArr.length] };
-      sendOrderArr.unshift(firstOrder);
-      sendDatas();
+      if (sendOrderArr.length > 0) {
+        btnSwitch('off');
+        for (var i = 0; i < sendOrderArr.length; i++) {
+          sendOrderArr[i].data.unshift(i);
+        }
+        var firstOrder = { "cmd": 0, "data": [sendOrderArr.length] };
+        sendOrderArr.unshift(firstOrder);
+        sendDatas();
+      } else {
+        ModalBox.noticeMsg = "蛋仔检测不到线条哟~";
+      }
+
+    } else {
+      ModalBox.noticeMsg = '您还没登录呢~';
     }
-    return;
   };
-  matrix.num = Math.pow(this.index, 2);
-  points.init();
-  matrix.init();
-  matrix.draw();
 }
 var addSubBtn = new AddSubBtnObj();
 /**
@@ -361,32 +296,33 @@ btnSwitch('on');
 function sendDatas() {
   var count = 0;
   var timer;
-  timer = setInterval(send, 600);
   function send() {
-    // $.ajax({
-    //   type: "POST",
-    //   url: "BlocklyOnenet",
-    //   data: {
-    //     "deviceId": Datas,
-    //     "cmd": sendOrderArr[count].cmd,
-    //     "BlocklyData": sendOrderArr[count].data
-    //   },
-    //   traditional: true,
-    //   success: function () {
-
-    //   },
-    //   error: function () {
-    //     alert("指令遗失在外太空啦，再试一次");
-    //   }
-    // });
-    console.log(sendOrderArr[count]);
-    count++;
-    if (count == sendOrderArr.length) {
-      clearInterval(timer);
-      btnSwitch('on');
-      ball.init();
-    }
-  }
+    $.ajax({
+      type: "POST",
+      url: "BlocklyOnenet",
+      data: {
+        "deviceId": sendBox.deviceId[0].deviceId,
+        "cmd": sendOrderArr[count].cmd,
+        "BlocklyData": sendOrderArr[count].data
+      },
+      traditional: true,
+      success: function () {
+        clearTimeout(alertTimer);
+        ModalBox.noticeMsg = "蛋蛋正在接收第" + count + "条指令";
+        count++;
+        timer = setTimeout(send, 200);
+        if (count == sendOrderArr.length) {
+          clearInterval(timer);
+          ModalBox.noticeMsg = "蛋蛋已经接收完数据啦~";
+          btnSwitch('on');
+        }
+      },
+      error: function () {
+        alert("指令遗失在外太空啦，再试一次");
+      }
+    });
+  };
+  send();
 };
 
 
